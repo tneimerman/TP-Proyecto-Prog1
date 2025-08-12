@@ -1,0 +1,41 @@
+PROYECTO AGENCIA DE VIAJES
+-Matrices:
+-Usuarios
+  -DNI
+  -Nombre
+  -Apellido
+  -Telefono
+  -Mail
+  -Fecha nacimiento
+-Destinos
+  -ID
+  -Destino
+  -Descripcion
+-Vuelos
+  -ID
+  -Empresa
+  -IDDestino
+  -FechaPartida
+  -FechaLlegada
+  -Escala (bool)
+-Actividades
+  -ID
+  -Tipo
+  -Descripcion
+  -Fecha
+-Hoteleria
+  -ID
+  -Nombre
+  -Descripcion
+  -Ubicacion
+  -Rating
+-Pack
+  -ID
+  -Nombre
+  -Precio
+  -IDDestino
+  -IDVuelo
+  -IDActividad
+  -IDHotel
+  
+
