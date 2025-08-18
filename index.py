@@ -53,3 +53,12 @@ Pack = [
     [4, "Italia Gourmet", 1700, 4, 4, 4, 4],
     [5, "Japon Tradicion", 2500, 5, 5, 5, 5],
 ]
+
+referenciaAerolinea = ["ID", "Nombre", "Modelo"]
+Aerolinea = [
+    [1, "Aerolinea de Argentina", "Airbus A330-200"],
+    [2, "Qatar Airways", "Boeing 777"],
+    [3, "Copa", "Boeing 737 MAX 9-A"],
+    [4, "Flybondi", "Airbus A320"],
+    [5, "JetSMART", "Airbus A321neo"],   
+]
