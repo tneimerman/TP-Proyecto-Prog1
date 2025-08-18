@@ -45,13 +45,13 @@ Hoteleria = [
     [5, "Park Hyatt Tokyo", "Hotel moderno con vistas al Monte Fuji", "Tokio, Japon", 5],   
 ]
 
-referenciaPack = ["ID", "Nombre", "Precio", "IDDestino", "IDVuelo", "IDActividad", "IDHotel"]
+referenciaPack = ["ID", "Nombre", "Precio", "IDDestino", "IDVuelo", "IDActividad", "IDHotel","IDAerolinea"]
 Pack = [
-    [1, "Brasil Aventura", 1200, 1, 1, 1, 1],
-    [2, "Espana Cultural", 1500, 2, 2, 2, 2],
-    [3, "Mexico Historico", 1100, 3, 3, 3, 3],
-    [4, "Italia Gourmet", 1700, 4, 4, 4, 4],
-    [5, "Japon Tradicion", 2500, 5, 5, 5, 5],
+    [1, "Brasil Aventura", 1200, 1, 1, 1, 1, 1],
+    [2, "Espana Cultural", 1500, 2, 2, 2, 2, 2],
+    [3, "Mexico Historico", 1100, 3, 3, 3, 3, 3],
+    [4, "Italia Gourmet", 1700, 4, 4, 4, 4, 4],
+    [5, "Japon Tradicion", 2500, 5, 5, 5, 5, 5],
 ]
 
 referenciaAerolinea = ["ID", "Nombre", "Modelo"]
