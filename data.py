@@ -1,12 +1,12 @@
-import random
 
-referenciaUsuarios = ["DNI", "Nombre", "Apellido", "Telefono", "Fecha Nacimiento"]
+
+referenciaUsuarios = ["Usuario", "Contraseña","Mail", "DNI", "Nombre", "Apellido", "Telefono", "Fecha Nacimiento"]
 Usuarios = [
-    ["40123456", "Juan", "Perez", "1134567890", "1990-05-14"],
-    ["39234567", "Maria", "Gonzalez", "1145678901", "1987-10-22"],
-    ["38456789", "Carlos", "Ramirez", "1156789012", "1995-07-03"],
-    ["41234567", "Lucia", "Fernandez", "1167890123", "1992-01-19"],
-    ["37567890", "Ana", "Martinez", "1178901234", "1985-03-28"],
+    ["Jperez", "12345","jperez@gmail.com", "40123456", "Juan", "Perez", "1134567890", "1990-05-14"],
+    ["Mgonza", "23456", "mgonzalez@yahoo.com.ar", "39234567", "Maria", "Gonzalez", "1145678901", "1987-10-22"],
+    ["Crami", "35467","carlosramirez@gmail.com" "38456789", "Carlos", "Ramirez", "1156789012", "1995-07-03"],
+    ["Lufernan", "45678","lufernandez@hotmail.com", "41234567", "Lucia", "Fernandez", "1167890123", "1992-01-19"],
+    ["Amarti", "56789","anamartinez@yahoo.com.ar", "37567890", "Ana", "Martinez", "1178901234", "1985-03-28"],
 ]
 
 referenciaDestinos = ["ID", "Destino", "Descripcion"]
