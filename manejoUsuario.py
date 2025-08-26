@@ -2,7 +2,6 @@ from data import Usuarios
 from data import referenciaUsuarios
 posUser = referenciaUsuarios.index("Usuario")
 posContraseña = referenciaUsuarios.index("Contraseña")
-def Busqueda(item):
     
 
 def Registro():
@@ -24,12 +23,12 @@ def Login():
 def MenuLog():
     success = False
     while success != True:
-        print("╔══════════════════╗")
-        print("║ Elije una opcion ║")
-        print("║ 1. Registro      ║")
-        print("║ 2. Inicio sesion ║")
-        print("║ 3. Salir         ║")
-        print("╚══════════════════╝")
+        print(f"╔{"═":═^18}╗")
+        print(f"║ {"Elije una opcion":^1} ║")
+        print(f"║ 1. Registro      ║")
+        print(f"║ 2. Inicio sesion ║")
+        print(f"║ 3. Salir         ║")
+        print(f"╚{"═":═^17}═╝")
         ans = int(input(""))
         match ans:
             case 1:
