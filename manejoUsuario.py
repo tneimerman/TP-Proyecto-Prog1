@@ -1,15 +1,15 @@
-from data import Usuarios
-from data import referenciaUsuarios
-posUser = referenciaUsuarios.index("Usuario")
-posContraseña = referenciaUsuarios.index("Contraseña")
+from data import Pasajeros
+from data import referenciaPasajeros
+posUser = referenciaPasajeros.index("ID")
+posContraseña = referenciaPasajeros.index("Contraseña")
     
 
 def Registro():
     listaAgregado = []
-    for i in range(len(referenciaUsuarios)):
-        dataInsert = input(f"Ingrese su {referenciaUsuarios[i]}: ")
+    for i in range(len(referenciaPasajeros)):
+        dataInsert = input(f"Ingrese su {referenciaPasajeros[i]}: ")
         listaAgregado.append(dataInsert)
-    Usuarios.append(listaAgregado)
+    Pasajeros.append(listaAgregado)
 
 def Login():
     success = False
