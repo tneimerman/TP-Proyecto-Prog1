@@ -1,7 +1,9 @@
 from data import referenciaPasajeros, Pasajeros
+import re
 
 def getNewId():
     return len(Pasajeros) + 1
+
 
 # -------- CREATE --------
 def registro():
@@ -50,53 +52,36 @@ def registro():
     nuevo.append(fecha)
 
     Pasajeros.append(nuevo)
-    print("✅ Pasajero registrado con ID:", nuevo_id)
+    print("Pasajero registrado con ID:", nuevo_id)
     return nuevo_id
 
 # -------- READ (LOGIN) --------
 def login():
-    print("\n--- Login ---")
-    mail = input("Mail: ")
-    contraseña = input("Contraseña: ")
-    for p in Pasajeros:
-        if p[2] == mail and p[1] == contraseña:
-            print("✅ Bienvenido,", p[4], p[5])
-            return p[0]   # devolver ID
-    print("❌ Credenciales inválidas.")
-    return None
+    pid = 0
+    bandera = False
+    while bandera != False:
+        while pid != 0:            
+            print("\n--- Login ---")
+            mail = input("Mail: ")
+            if re.findall("@", mail) != 0:
+                print("Mail no encontrado intente denuevo")
+                break
+            contraseña = input("Contraseña: ")
+            for p in Pasajeros:
+                if p[2] == mail and p[1] == contraseña:
+                    print("✅ Bienvenido,", p[4], p[5])
+                    pid = p[0]   # devolver ID
+                    bandera = True
+                    break
+            print("Credenciales inválidas.")
+    return pid
 
-# -------- READ (Buscar por DNI) --------
-def buscar_por_dni():
-    print("\n--- Buscar pasajero por DNI ---")
-    dni = input("Ingrese DNI: ")
-    for p in Pasajeros:
-        if p[3] == dni:
-            print("✅ Pasajero encontrado. ID:", p[0])
-            for i in range(len(referenciaPasajeros)):
-                print(referenciaPasajeros[i], ":", p[i])
-            return p[0]
-    print("❌ No existe pasajero con ese DNI.")
-    return None
+
+
 
 # -------- UPDATE --------
 def actualizar():
-    print("\n--- Actualizar pasajero ---")
-    pid = input("Ingrese ID: ")
-    encontrado = None
-    for p in Pasajeros:
-        if str(p[0]) == pid:
-            encontrado = p
-    if not encontrado:
-        print("❌ No existe pasajero con ese ID.")
-        return
-
-    print("Deje vacío para no modificar.")
-    for i in range(1, len(referenciaPasajeros)):
-        actual = input(f"{referenciaPasajeros[i]} ({encontrado[i]}): ")
-        if actual != "":
-            encontrado[i] = actual
-    print("✅ Actualización completa.")
-    return int(pid)
+    p = 0
 
 # -------- DELETE --------
 def eliminar():
@@ -105,40 +90,42 @@ def eliminar():
     for p in Pasajeros:
         if str(p[0]) == pid:
             Pasajeros.remove(p)
-            print("🗑️  Pasajero eliminado:", pid)
+            print("Pasajero eliminado:", pid)
             return int(pid)
-    print("❌ No existe pasajero con ese ID.")
+    print("No existe pasajero con ese ID.")
     return None
 
 # -------- MENU --------
 def menuPasajeros():
+    idPasajero = 0
     salir = False
     
     while not salir:
         print("\n--- Menú Pasajeros ---")
         print("1. Registrar pasajero")
         print("2. Login")
-        print("3. Buscar pasajero por DNI")
-        print("4. Actualizar pasajero")
-        print("5. Eliminar pasajero")
-        print("6. Salir")
+        print("3. Actualizar pasajero")
+        print("4. Eliminar pasajero")
+        print("5. Salir")
+        print()
+        if(idPasajero != 0):
+            print(f"usted ha iniciado sesion en la cuenta de {Pasajeros[pid][4]} {Pasajeros[pid][5]}")
 
         op = input("Opción: ")
         if op == "1":
-            registro()
+            idPasajero = registro()
         elif op == "2":
-            login()
+            idPasajero = login()
         elif op == "3":
-            buscar_por_dni()
+            actualizar(pid)
         elif op == "4":
-            actualizar()
-        elif op == "5":
             eliminar()
-        elif op == "6":
+            idPasajero = 0
+        elif op == "5":
             salir = True
         else:
             print("⚠️  Opción inválida.")
 
+    return idPasajero
+
 # ejecutar
-id = 0
-menuPasajeros()

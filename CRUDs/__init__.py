@@ -1,1 +1,1 @@
-from .Pasajeros import menu
+from .Pasajeros import menuPasajeros

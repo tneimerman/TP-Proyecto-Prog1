@@ -1,3 +1,5 @@
 import CRUDs
 
-prueba = CRUDs.menu()
+
+idp = CRUDs.menuPasajeros()
+
