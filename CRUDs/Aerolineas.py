@@ -65,7 +65,8 @@ def buscar_aerolineas():
     elif opcion == "3":
         buscar_por_nombre()
     elif opcion == "4":
-        buscar_por_modelo()
+        print("deshabilitado por el momento")
+        # buscar_por_modelo()
     else:
         print("Opcion invalida.")
 
