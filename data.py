@@ -1,3 +1,5 @@
+# data.py
+
 referenciaPasajeros = ["ID", "Contraseña","Mail", "DNI", "Nombre", "Apellido", "Telefono", "Fecha Nacimiento"]
 Pasajeros = [
     [1, "12345","jperez@gmail.com", "40123456", "Juan", "Perez", "1134567890", "1990-05-14"],
@@ -35,3 +37,4 @@ Aerolinea = [
     [5, "JetSMART", "Airbus A321neo"],   
 ]
 referenciavueloUser = ["ID","IDDestino","IDVuelo","idAerolinea"]
+VueloUser = []
