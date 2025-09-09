@@ -13,13 +13,7 @@ def get_new_id():
         i += 1
     return max_id + 1
 
-def buscar_idx_por_id(pid):
-    i = 0
-    while i < len(Pasajeros):
-        if Pasajeros[i][0] == pid:
-            return i
-        i += 1
-    return -1
+
 
 def validar_mail(mail):
 
@@ -50,57 +44,6 @@ def registro():
     nuevo_id = get_new_id()
     nuevo.append(nuevo_id)  # ID automático
 
-    # Contraseña (mínimo: permitir cualquier string)
-    contr = input("Ingrese su Contraseña: ")
-    nuevo.append(contr)
-
-    # Mail (solo formato)
-    while True:
-        mail = input("Ingrese su Mail: ")
-        ok, msg = validar_mail(mail)
-        if not ok:
-            print("❌", msg)
-            continue
-        nuevo.append(mail)
-        break
-
-    # DNI (solo dígitos)
-    while True:
-        dni = input("Ingrese su DNI: ")
-        ok, msg = validar_dni(dni)
-        if not ok:
-            print("❌", msg)
-            continue
-        nuevo.append(dni)
-        break
-
-    nombre = input("Ingrese su Nombre: ")
-    nuevo.append(nombre)
-    apellido = input("Ingrese su Apellido: ")
-    nuevo.append(apellido)
-
-    # Teléfono (solo dígitos)
-    while True:
-        tel = input("Ingrese su Teléfono: ")
-        ok, msg = validar_telefono(tel)
-        if not ok:
-            print("❌", msg)
-            continue
-        nuevo.append(tel)
-        break
-
-    # Fecha Nacimiento (patrón simple)
-    while True:
-        fecha = input("Ingrese su Fecha de Nacimiento (AAAA-MM-DD): ")
-        ok, msg = validar_fecha(fecha)
-        if not ok:
-            print("❌", msg)
-            continue
-        nuevo.append(fecha)
-        break
-
-    Pasajeros.append(nuevo)
-    print("✅ Pasajero registrado con ID:", nuevo_id)
     return nuevo_id
 
 
@@ -129,106 +72,29 @@ def login():
                 return Pasajeros[i][0]
             i += 1
 
-        print("❌ Credenciales inválidas.")
+        print(" Credenciales inválidas.")
 
 
-def actualizar(pid=None):
-    print("\n--- Actualizar pasajero ---")
-    if pid is None:
-        entrada = input("Ingrese ID a actualizar: ")
-        if not entrada.isdigit():
-            print("❌ ID inválido.")
-            return None
-        pid = int(entrada)
-
-    idx = buscar_idx_por_id(pid)
-    if idx == -1:
-        print("❌ No existe pasajero con ese ID.")
-        return None
-
-    p = Pasajeros[idx]
-    print("Editando a:", p)
+def actualizar(pid):
+    correct = False
+    print(f"\n{"Actualizar pasajero":-3}")
+    print(f"Bienvenido {Pasajeros[pid][4]} {Pasajeros[pid][5]}")
+    print("¿Que desea actualizar\n1.")
+    
 
 
-    nuevo = input(f"Contraseña [{p[1]}]: ")
-    if nuevo != "":
-        p[1] = nuevo
 
 
-    while True:
-        nuevo = input(f"Mail [{p[2]}]: ")
-        if nuevo == "":
-            break
-        ok, msg = validar_mail(nuevo)
-        if ok:
-            p[2] = nuevo
-            break
-        print("❌", msg)
+def eliminar(pid):
 
-
-    while True:
-        nuevo = input(f"DNI [{p[3]}]: ")
-        if nuevo == "":
-            break
-        ok, msg = validar_dni(nuevo)
-        if ok:
-            p[3] = nuevo
-            break
-        print("❌", msg)
-
-    # Nombre    nuevo = input(f"Nombre [{p[4]}]: ")
-    if nuevo != "":
-        p[4] = nuevo
-
-
-    nuevo = input(f"Apellido [{p[5]}]: ")
-    if nuevo != "":
-        p[5] = nuevo
-
-
-    while True:
-        nuevo = input(f"Teléfono [{p[6]}]: ")
-        if nuevo == "":
-            break
-        ok, msg = validar_telefono(nuevo)
-        if ok:
-            p[6] = nuevo
-            break
-        print("❌", msg)
-
-    while True:
-        nuevo = input(f"Fecha Nacimiento [{p[7]}] (AAAA-MM-DD): ")
-        if nuevo == "":
-            break
-        ok, msg = validar_fecha(nuevo)
-        if ok:
-            p[7] = nuevo
-            break
-        print("❌", msg)
-
-    print("✅ Pasajero actualizado.")
-    return pid
-
-
-def eliminar():
-    """
-    Elimina pasajero por ID. Borrado por coincidencia exacta del ID.
-    """
-    print("\n--- Eliminar pasajero ---")
-    entrada = input("Ingrese ID: ")
-    if not entrada.isdigit():
-        print("❌ ID inválido.")
-        return None
-    pid = int(entrada)
-
-    idx = buscar_idx_por_id(pid)
-    if idx == -1:
-        print("❌ No existe pasajero con ese ID.")
-        return None
-
-    Pasajeros.pop(idx)
-    print("🗑️ Pasajero eliminado:", pid)
-    return pid
+    print(f"\n{"Eliminar pasajero":-3}")
+    print(f"¿Desea eliminar el pasajero {Pasajeros[pid][4], Pasajeros[pid][5]}")
+    op = input("s/n ")
+    if op.lower() == "s":
+        Pasajeros.pop(pid)
+        print("Pasajero eliminado correctamente")
+    else:
+        print()
 
 
 
@@ -244,9 +110,7 @@ def menu_pasajeros():
         print("4. Eliminar pasajero")
         print("5. Salir")
         if id_pasajero != 0:
-            idx = buscar_idx_por_id(id_pasajero)
-            if idx != -1:
-                print(f"\nSesión iniciada: {Pasajeros[idx][4]} {Pasajeros[idx][5]} (ID {id_pasajero})")
+            print(f"\nSesión iniciada: {Pasajeros[id_pasajero][4]} {Pasajeros[id_pasajero][5]} (ID {id_pasajero})")
 
         op = input("\nOpción: ").strip()
         match op:
@@ -255,14 +119,14 @@ def menu_pasajeros():
             case "2":
                 id_pasajero = login()
             case "3":
-                actualizar()  # pide ID adentro
+                actualizar(id_pasajero)  # pide ID adentro
             case "4":
                 eliminado = eliminar()
                 if eliminado == id_pasajero:
                     id_pasajero = 0
             case "5":
-                break
+                salir = True
             case _:
-                print("⚠️  Opción inválida.")
-                continue
+                print("Opción inválida.")
+                
     return id_pasajero
