@@ -2,6 +2,11 @@
 from data import referenciaPasajeros, Pasajeros
 import re
 
+def displayActualizar():
+    start = referenciaPasajeros.index("Contraseña")
+    for i, campo in enumerate(referenciaPasajeros[start:], start=start):
+        print(i, campo)
+    print("7. Todo")
 
 def get_new_id():
     """ID autoincremental robusto (toma max + 1, no len)."""
@@ -77,9 +82,13 @@ def login():
 
 def actualizar(pid):
     correct = False
-    print(f"\n{"Actualizar pasajero":-3}")
+    print(f"\nActualizar pasajero")
     print(f"Bienvenido {Pasajeros[pid][4]} {Pasajeros[pid][5]}")
-    print("¿Que desea actualizar\n1.")
+    print("¿Que desea actualizar")
+    displayActualizar()
+    op = int(input("Elije una opcion: "))
+
+
     
 
 
