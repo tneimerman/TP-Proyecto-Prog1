@@ -414,6 +414,3 @@ def main():
             print("Opción no válida. Por favor, seleccione una opción del menú.")
         
         input("\nPresione Enter para continuar...")
-
-if __name__ == "__main__":
-    main()
