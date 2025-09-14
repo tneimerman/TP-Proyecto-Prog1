@@ -2,6 +2,11 @@
 from data import referenciaPasajeros, Pasajeros
 import re
 
+def displayActualizar():
+    start = referenciaPasajeros.index("Contraseña")
+    for i, campo in enumerate(referenciaPasajeros[start:], start=start):
+        print(i, campo)
+    print("7. Todo")
 
 def get_new_id():
     """ID autoincremental robusto (toma max + 1, no len)."""
@@ -132,82 +137,10 @@ def login():
         print("❌ Credenciales inválidas.")
 
 
+
 def actualizar(pid=None):
     print("\n--- Actualizar pasajero ---")
-    if pid is None:
-        entrada = input("Ingrese ID a actualizar: ")
-        if not entrada.isdigit():
-            print("❌ ID inválido.")
-            return None
-        pid = int(entrada)
 
-    idx = buscar_idx_por_id(pid)
-    if idx == -1:
-        print("❌ No existe pasajero con ese ID.")
-        return None
-
-    p = Pasajeros[idx]
-    print("Editando a:", p)
-
-
-    nuevo = input(f"Contraseña [{p[1]}]: ")
-    if nuevo != "":
-        p[1] = nuevo
-
-
-    while True:
-        nuevo = input(f"Mail [{p[2]}]: ")
-        if nuevo == "":
-            break
-        ok, msg = validar_mail(nuevo)
-        if ok:
-            p[2] = nuevo
-            break
-        print("❌", msg)
-
-
-    while True:
-        nuevo = input(f"DNI [{p[3]}]: ")
-        if nuevo == "":
-            break
-        ok, msg = validar_dni(nuevo)
-        if ok:
-            p[3] = nuevo
-            break
-        print("❌", msg)
-
-    # Nombre    nuevo = input(f"Nombre [{p[4]}]: ")
-    if nuevo != "":
-        p[4] = nuevo
-
-
-    nuevo = input(f"Apellido [{p[5]}]: ")
-    if nuevo != "":
-        p[5] = nuevo
-
-
-    while True:
-        nuevo = input(f"Teléfono [{p[6]}]: ")
-        if nuevo == "":
-            break
-        ok, msg = validar_telefono(nuevo)
-        if ok:
-            p[6] = nuevo
-            break
-        print("❌", msg)
-
-    while True:
-        nuevo = input(f"Fecha Nacimiento [{p[7]}] (AAAA-MM-DD): ")
-        if nuevo == "":
-            break
-        ok, msg = validar_fecha(nuevo)
-        if ok:
-            p[7] = nuevo
-            break
-        print("❌", msg)
-
-    print("✅ Pasajero actualizado.")
-    return pid
 
 
 def eliminar():
@@ -264,5 +197,4 @@ def menu_pasajeros():
                 break
             case _:
                 print("⚠️  Opción inválida.")
-                continue
     return id_pasajero
