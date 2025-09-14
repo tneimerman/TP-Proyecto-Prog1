@@ -43,6 +43,8 @@ def obtener_info_vuelo(id_vuelo):
         return f"{empresa} - {nombre_destino} ({fecha})"
     return "Vuelo desconocido"
 
+# CRUD - INSERTAR NUEVA RELACION VUELO-PASAJERO
+
 def crear_relacion_vuelo_pasajero():
     """Crea una nueva relación vuelo-pasajero"""
     print("\n=== CREAR NUEVA RELACIÓN VUELO-PASAJERO ===")
@@ -95,8 +97,9 @@ def crear_relacion_vuelo_pasajero():
     print(f"Pasajero: {obtener_nombre_pasajero(id_pasajero)}")
     print(f"Vuelo: {obtener_info_vuelo(id_vuelo)}")
 
+# CRUD - BUSCAR NUEVA RELACION VUELO-PASAJERO
+
 def buscar_relaciones():
-    """Busca relaciones vuelo-pasajero"""
     print("\n=== BUSCAR RELACIONES VUELO-PASAJERO ===")
     print("1. Buscar por ID de relación")
     print("2. Buscar por ID de pasajero")
@@ -146,6 +149,9 @@ def buscar_relaciones():
         nombre_pasajero = obtener_nombre_pasajero(relacion[1])
         info_vuelo = obtener_info_vuelo(relacion[2])
         print(f"ID: {relacion[0]} | Pasajero: {nombre_pasajero} | Vuelo: {info_vuelo}")
+
+
+# CRUD - ACTUALIZAR RELACION VUELO-PASAJERO
 
 def actualizar_relacion():
     """Actualiza una relación vuelo-pasajero existente"""
@@ -247,6 +253,8 @@ def actualizar_relacion():
     print(f"   Pasajero: {obtener_nombre_pasajero(nuevo_id_pasajero)}")
     print(f"   Vuelo: {obtener_info_vuelo(nuevo_id_vuelo)}")
 
+# CRUD - ELIMINAR RELACION VUELO-PASAJERO
+
 def eliminar_relacion():
     """Elimina una relación vuelo-pasajero"""
     print("\n=== ELIMINAR RELACIÓN VUELO-PASAJERO ===")
@@ -286,8 +294,9 @@ def eliminar_relacion():
     print(f"Pasajero: {obtener_nombre_pasajero(relacion_encontrada[1])}")
     print(f"Vuelo: {obtener_info_vuelo(relacion_encontrada[2])}")
 
+# FUNCIONES DE ESTADÍSTICAS Y REPORTES
+
 def generar_estadisticas():
-    """Genera estadísticas usando funciones lambda, map, filter y reduce"""
     print("\n=== ESTADÍSTICAS DEL SISTEMA ===")
     
     if not VueloPasajero:
@@ -307,7 +316,7 @@ def generar_estadisticas():
         return
     
     if opcion in [1, 5]:
-        # Pasajero con más vuelos usando map, filter y reduce
+        # Pasajero con más vuelos
         ids_pasajeros = list(map(lambda x: x[1], VueloPasajero))
         pasajeros_unicos = list(set(ids_pasajeros))
         
@@ -365,7 +374,6 @@ def generar_estadisticas():
                 print(f"   {empresa}: {cantidad} reservas")
 
 def mostrar_menu():
-    """Muestra el menú principal"""
     print("\n" + "="*50)
     print("    SISTEMA CRUD - RELACIONES VUELO-PASAJERO")
     print("="*50)
@@ -378,7 +386,6 @@ def mostrar_menu():
     print("="*50)
 
 def main():
-    """Función principal del programa"""
     print("¡Bienvenido al Sistema de Gestión de Relaciones Vuelo-Pasajero!")
     
     while True:
