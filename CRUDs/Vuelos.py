@@ -1,4 +1,5 @@
 from data import referenciaVuelos, Vuelos, Destinos
+from CRUDs.Destinos import mostrar_destinos 
 
 def getNewIdVuelo():
     if len(Vuelos) == 0:
@@ -27,7 +28,7 @@ def registrar_vuelo():
             if d[0] == iddest:
                 existe = True
         if not existe:
-            print("❌ Ese destino no existe.")
+            print("Ese destino no existe.")
             return None
         nuevo.append(iddest)
     except ValueError:
@@ -41,7 +42,7 @@ def registrar_vuelo():
     nuevo.append(escala)
 
     Vuelos.append(nuevo)
-    print("✅ Vuelo registrado con ID:", nuevo_id)
+    print("Vuelo registrado con ID:", nuevo_id)
     return nuevo_id
 
 # READ
@@ -54,6 +55,7 @@ def mostrar_vuelos():
             if d[0] == v[2]:
                 destino = d[1]
         print(v[0], "-", v[1], "-", destino, "-", v[3], "-", v[4])
+
 
 def buscar_vuelo():
     criterio = input("Ingrese empresa o destino a buscar: ")
@@ -106,14 +108,14 @@ def actualizar_vuelo():
                 nueva_escala = input("Nueva escala (Enter para mantener): ")
                 if nueva_escala != "":
                     v[4] = nueva_escala
-                print("✅ Vuelo actualizado.")
+                print("Vuelo actualizado.")
                 return vid
-        print("❌ No se encontró vuelo con ese ID.")
+        print("No se encontró vuelo con ese ID.")
     except ValueError:
         print("ID inválido.")
     return None
 
-# DELETE
+
 def eliminar_vuelo():
     mostrar_vuelos()
     try:
@@ -121,13 +123,37 @@ def eliminar_vuelo():
         for v in Vuelos:
             if v[0] == vid:
                 Vuelos.remove(v)
-                print("✅ Vuelo eliminado.")
+                print("Vuelo eliminado.")
                 return vid
-        print("❌ No se encontró vuelo con ese ID.")
+        print("No se encontró vuelo con ese ID.")
     except ValueError:
         print("ID inválido.")
     return None
 
-# MENU
+
 def menuVuelos():
-    salir
+    while True:
+        print("\n--- Menú Vuelos ---")
+        print("1. Registrar vuelo")
+        print("2. Mostrar vuelos")
+        print("3. Buscar vuelo")
+        print("4. Actualizar vuelo")
+        print("5. Eliminar vuelo")
+        print("6. Salir")
+        opcion = input("Seleccione una opción: ")
+
+        if opcion == "1":
+            registrar_vuelo()
+        elif opcion == "2":
+            mostrar_vuelos()
+        elif opcion == "3":
+            buscar_vuelo()
+        elif opcion == "4":
+            actualizar_vuelo()
+        elif opcion == "5":
+            eliminar_vuelo()
+        elif opcion == "6":
+            print("Saliendo del menú de vuelos...")
+            break
+        else:
+            print("Opción inválida.")

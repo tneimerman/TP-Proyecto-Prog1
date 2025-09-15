@@ -2,6 +2,7 @@
 
 referenciaPasajeros = ["ID", "Contraseña","Mail", "DNI", "Nombre", "Apellido", "Telefono", "Fecha Nacimiento"]
 Pasajeros = [
+    [0,"","","","","","",""],
     [1, "12345","jperez@gmail.com", "40123456", "Juan", "Perez", "1134567890", "1990-05-14"],
     [2, "23456", "mgonzalez@yahoo.com.ar", "39234567", "Maria", "Gonzalez", "1145678901", "1987-10-22"],
     [3, "35467","carlosramirez@gmail.com" "38456789", "Carlos", "Ramirez", "1156789012", "1995-07-03"],

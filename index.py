@@ -15,7 +15,8 @@ if __name__ == "__main__":
         op = input("Opción: ")
         match op:
             case "1":
-                idp =CRUDs.menu_pasajeros()
+                # 👇 PASAR el ID actual y RECIBIR el actualizado
+                idp = CRUDs.menu_pasajeros(idp)
             case "2":
                 CRUDs.menu_aerolineas()
             case "3":
@@ -23,10 +24,10 @@ if __name__ == "__main__":
             case "4":
                 CRUDs.menu_vuelo()
             case "5":
-                CRUDs.menu_vuelo_pasajero()
+                # si tu menú de vuelos de pasajero necesita el id, pásalo también
+                CRUDs.menu_vuelo_pasajero(idp)  # opcional si corresponde
             case "0":
                 print("Gracias por usar el sistema!")
                 bandera = False
             case _:
                 print("Opción inválida.")
-

@@ -24,8 +24,10 @@ def validar_fecha(fecha):
 def displayActualizar():
     start = referenciaPasajeros.index("Contraseña")
     for i, campo in enumerate(referenciaPasajeros[start:], start=start):
-        print(i, campo)
-    print("7. Todo")
+        print(f"{i}. {campo}")
+    print("8. Todo")
+    op = input()
+    return op
 def getPosMatriz():
     contra = referenciaPasajeros.index("Contraseña")
     mail = referenciaPasajeros.index("Mail")
@@ -35,14 +37,16 @@ def getPosMatriz():
     telefono = referenciaPasajeros.index("Telefono")
     fecha = referenciaPasajeros.index("Fecha Nacimiento")
     return contra, mail, dni, nombre, apellido, telefono, fecha
-def funcionActualizar(op,idPasajero):
+def funcionActualizar(op,idp):
+    idPasajero = idp - 1
     contra, mail, dni, nombre, apellido, telefono, fecha = getPosMatriz()
-    valid_mail, valid_DNI, valid_tel, valid_fecha = False
+    valid_mail, valid_DNI, valid_tel, valid_fecha = False, False, False, False
     match op:
         case "1":
             print("Inserte la nueva contraseña:")
             nuevaContra = input()
             Pasajeros[idPasajero][contra] = nuevaContra
+            return True
         case "2":
             while valid_mail == False:
                 print("Inserte el nuevo mail:")
@@ -52,6 +56,7 @@ def funcionActualizar(op,idPasajero):
                     print(msg)
                 else:
                     Pasajeros[idPasajero][mail] = nuevoMail
+                    return True
         case "3":
             while valid_DNI == False:
                 print("Inserte el nuevo DNI:")
@@ -61,14 +66,17 @@ def funcionActualizar(op,idPasajero):
                     print(msg)
                 else:
                     Pasajeros[idPasajero][dni] = nuevoDNI
+                    return True
         case "4":
             print("Inserte el nuevo nombre:")
             nuevoNombre = input()
             Pasajeros[idPasajero][nombre] = nuevoNombre
+            return True
         case "5":
             print("Inserte el nuevo apellido:")
             nuevoApellido = input()
             Pasajeros[idPasajero][apellido] = nuevoApellido
+            return True
         case "6":
             while valid_tel == False:
                 print("Inserte el nuevo telefono:")
@@ -78,6 +86,7 @@ def funcionActualizar(op,idPasajero):
                     print(msg)
                 else:
                     Pasajeros[idPasajero][telefono] = nuevoTelefono
+                    return True
         case "7":
             while valid_fecha == False:
                 print("Inserte la nueva fecha de nacimiento:")
@@ -87,6 +96,7 @@ def funcionActualizar(op,idPasajero):
                     print(msg)
                 else:
                     Pasajeros[idPasajero][fecha] = nuevaFecha
+                    return True
         case "8": 
             print("Inserte la nueva contraseña:")
             nuevaContra = input()
@@ -129,6 +139,7 @@ def funcionActualizar(op,idPasajero):
                     print(msg)
                 else:
                     Pasajeros[idPasajero][fecha] = nuevaFecha
+            return True
         
 
 def buscarPasajero(dato):
@@ -151,7 +162,17 @@ def get_new_id():
 
 
 
-
+def datos_pasajero(id_pasajero):
+    print("="*28)
+    print(f"Datos del pasajero")
+    print("="*28)
+    print(f"╔{"="*28}╗")
+    if id_pasajero == 0:
+        print("Inicie sesión para ver sus datos.")
+    for i in range(len(Pasajeros[id_pasajero])):
+        print(f"║{referenciaPasajeros[i]}: {Pasajeros[id_pasajero][i]}\n║{" "*28}║")
+    print(f"╚{"="*28}╝")
+        
 
 def registro():
     print("\n--- Registro de pasajero ---")
@@ -167,8 +188,8 @@ def registro():
     while True:
         mail = input("Ingrese su Mail: ")
         ok, msg = validar_mail(mail)
-        if not ok:
-            print("❌", msg)
+        if ok != True:
+            print(msg)
             continue
         nuevo.append(mail)
         break
@@ -177,8 +198,8 @@ def registro():
     while True:
         dni = input("Ingrese su DNI: ")
         ok, msg = validar_dni(dni)
-        if not ok:
-            print("❌", msg)
+        if ok != True:
+            print( msg)
             continue
         nuevo.append(dni)
         break
@@ -192,8 +213,8 @@ def registro():
     while True:
         tel = input("Ingrese su Teléfono: ")
         ok, msg = validar_telefono(tel)
-        if not ok:
-            print("❌", msg)
+        if  ok != True:
+            print( msg)
             continue
         nuevo.append(tel)
         break
@@ -202,14 +223,14 @@ def registro():
     while True:
         fecha = input("Ingrese su Fecha de Nacimiento (AAAA-MM-DD): ")
         ok, msg = validar_fecha(fecha)
-        if not ok:
-            print("❌", msg)
+        if ok != True:
+            print( msg)
             continue
         nuevo.append(fecha)
         break
 
     Pasajeros.append(nuevo)
-    print("✅ Pasajero registrado con ID:", nuevo_id)
+    print("Pasajero registrado con ID:", nuevo_id)
     return nuevo_id
 
 
@@ -230,7 +251,7 @@ def login():
         i = 0
         while i < len(Pasajeros):
             if Pasajeros[i][2] == mail and Pasajeros[i][1] == contr:
-                print(f"✅ Bienvenido, {Pasajeros[i][4]} {Pasajeros[i][5]}")
+                print(f"Bienvenido, {Pasajeros[i][4]} {Pasajeros[i][5]}")
                 return Pasajeros[i][0]
             i += 1
 
@@ -238,39 +259,35 @@ def login():
 
 
 
-def actualizar():
+def actualizar(id_pasajero):
     op = 0
+    bandera = False
     print("="*50)
     print("\n--- Actualizar pasajero ---")
     print("="*50)
+    while bandera != True:
+        print("Elige una opcion:")
+        op = displayActualizar()
+        bandera = funcionActualizar(op, id_pasajero)
+        
+    print("Pasajero actualizado exitosamente")
 
-    print("Elige una opcion:")
-    op = displayActualizar()
-    funcionActualizar(op)
 
 
-
-def eliminar():
+def eliminar(id_pasajero):
     print("="*50)
     print("\n--- Eliminar pasajero ---")
     print("="*50)
-    entrada = input("Ingrese cualquier dato del pasajero: ")
-    x = buscarPasajero(entrada)
-    if x is None:
-        print("No se encontro el pasajero con ese dato")
-    else:
-        sn = input(f"Esta seguro de eliminar el pasajero {Pasajeros[x][4]} {Pasajeros[x][5]}? (s/n): ")
-        if sn.lower() == "s":
-        
-            Pasajeros.pop(x)
-            print("Pasajero eliminado exitosamente")
+    sn = input(f"Esta seguro de eliminar el pasajero {Pasajeros[id_pasajero][4]} {Pasajeros[id_pasajero][5]}? (s/n): ")
+    if sn.lower() == "s":
+        Pasajeros.pop(id_pasajero)
+        print("Pasajero eliminado exitosamente")
     
 
 
 
-def menu_pasajeros():
+def menu_pasajeros(id_pasajero=0):
     salir = False
-    id_pasajero = int()
     while salir != True:
         print()
         print("="*50)
@@ -281,30 +298,51 @@ def menu_pasajeros():
         if id_pasajero != 0:
             print("3. Actualizar pasajero")
             print("4. Eliminar pasajero")
+            print("5. Mostrar datos del pasajero")
         else:
+
             print("\033[9m3. Actualizar pasajero\033[0m")
             print("\033[9m4. Eliminar pasajero\033[0m")
+            print("\033[9m5. Mostrar datos del pasajero\033[0m")
             print("Inicie sesion o registrese para acceder a estas opciones")            
         print("0. Salir")
         print("="*50)
+
         if id_pasajero != 0:
-            print(f"\nSesión iniciada: {Pasajeros[id_pasajero-1][4]} {Pasajeros[id_pasajero-1][5]} (ID {id_pasajero})")
+            try:
+                print(f"\nSesión iniciada: {Pasajeros[id_pasajero][4]} {Pasajeros[id_pasajero][5]} (ID {id_pasajero})")
+            except Exception:
+
+                print(f"\nSesión iniciada con ID {id_pasajero} (registro no disponible)")
 
         op = input("\nOpción: ").strip()
         match op:
             case "1":
+
                 id_pasajero = registro()
             case "2":
+
                 id_pasajero = login()
             case "3":
-                actualizar()  # pide ID adentro
+                if id_pasajero != 0:
+                    actualizar(id_pasajero)
+                else:
+                    print("Primero iniciá sesión.")
             case "4":
-                eliminar()
-
+                if id_pasajero != 0:
+                    eliminar(id_pasajero)
+                    salir = True
+                    id_pasajero = 0
+                else:
+                    print("Primero iniciá sesión.")
+            case "5":
+                if id_pasajero != 0:
+                    datos_pasajero(id_pasajero)
+                else:
+                    print("Primero iniciá sesión.")
             case "0":
                 print("Volviendo al menú...")
                 salir = True
             case _:
-                print("⚠️  Opción inválida.")
-    return id_pasajero
-
+                print("Opción inválida.")
+    return id_pasajero 

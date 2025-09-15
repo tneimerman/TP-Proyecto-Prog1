@@ -414,4 +414,3 @@ def menu_vuelo_pasajero():
             print("Opción no válida. Por favor, seleccione una opción del menú.")
         
         input("\nPresione Enter para continuar...")
-
