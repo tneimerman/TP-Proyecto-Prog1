@@ -16,13 +16,13 @@ def registrar_destino():
     nuevo.append(nuevo_id)
 
     destino = input("Ingrese nombre del destino: ")
-    # Validar que no se repita
+ 
     repetido = False
     for d in Destinos:
         if d[1] == destino:
             repetido = True
     if repetido:
-        print("❌ Ese destino ya existe.")
+        print("Ese destino ya existe.")
         return None
     nuevo.append(destino)
 
@@ -30,7 +30,7 @@ def registrar_destino():
     nuevo.append(descripcion)
 
     Destinos.append(nuevo)
-    print("✅ Destino registrado con ID:", nuevo_id)
+    print("Destino registrado con ID:", nuevo_id)
     return nuevo_id
 
 # READ
@@ -67,9 +67,9 @@ def actualizar_destino():
                 nueva_desc = input("Nueva descripción (Enter para mantener): ")
                 if nueva_desc != "":
                     d[2] = nueva_desc
-                print("✅ Destino actualizado.")
+                print("Destino actualizado.")
                 return did
-        print("❌ No se encontró destino con ese ID.")
+        print("No se encontró destino con ese ID.")
     except ValueError:
         print("ID inválido.")
     return None
@@ -82,9 +82,9 @@ def eliminar_destino():
         for d in Destinos:
             if d[0] == did:
                 Destinos.remove(d)
-                print("✅ Destino eliminado.")
+                print("Destino eliminado.")
                 return did
-        print("❌ No se encontró destino con ese ID.")
+        print("No se encontró destino con ese ID.")
     except ValueError:
         print("ID inválido.")
     return None
