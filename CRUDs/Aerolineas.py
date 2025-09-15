@@ -255,15 +255,16 @@ def menu_aerolineas():
     salir = False
     
     while not salir:
+        print()
         print("\n" + "="*50)
-        print("SISTEMA DE GESTION DE AEROLINEAS")
+        print("--- Menú Gestión de Aerolineas ---")
         print("="*50)
         print("1. Registrar nueva aerolinea")
         print("2. Buscar aerolineas")
         print("3. Actualizar aerolinea")
         print("4. Eliminar aerolinea")
         print("5. Mostrar estadisticas")
-        print("6. Salir")
+        print("0. Salir")
         print("="*50)
         
         opcion = input("Seleccione una opcion: ").strip()
@@ -278,8 +279,9 @@ def menu_aerolineas():
             eliminar_aerolinea()
         elif opcion == "5":
             mostrar_estadisticas()
-        elif opcion == "6":
-            print("¡Gracias por usar el sistema!")
+        elif opcion == "0":
+            print("Volviendo al menú...")
+            print()
             salir = True
         else:
             print("Opcion invalida. Por favor seleccione una opcion del 1 al 6.")

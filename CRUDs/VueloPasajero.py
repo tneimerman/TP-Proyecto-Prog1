@@ -375,7 +375,7 @@ def generar_estadisticas():
 
 def mostrar_menu():
     print("\n" + "="*50)
-    print("    SISTEMA CRUD - RELACIONES VUELO-PASAJERO")
+    print("--- Menú Gestión de Relaciones Vuelo-Pasajero ---")
     print("="*50)
     print("1. Crear nueva relación")
     print("2. Buscar relaciones")
@@ -385,7 +385,7 @@ def mostrar_menu():
     print("0. Salir")
     print("="*50)
 
-def main():
+def menu_vuelo_pasajero():
     print("¡Bienvenido al Sistema de Gestión de Relaciones Vuelo-Pasajero!")
     
     while True:
@@ -408,12 +408,10 @@ def main():
         elif opcion == 5:
             generar_estadisticas()
         elif opcion == 0:
-            print("¡Gracias por usar el sistema! ¡Hasta luego!")
+            print("Volviendo al menú...")
             break
         else:
             print("Opción no válida. Por favor, seleccione una opción del menú.")
         
         input("\nPresione Enter para continuar...")
 
-if __name__ == "__main__":
-    main()

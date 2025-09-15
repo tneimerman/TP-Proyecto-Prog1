@@ -90,16 +90,20 @@ def eliminar_destino():
     return None
 
 # MENU
-def menuDestinos():
+def menu_destinos():
     salir = False
     while not salir:
+        print()
+        print("="*50)
         print("\n--- Menú Destinos ---")
+        print("="*50)
         print("1. Registrar destino")
         print("2. Mostrar destinos")
         print("3. Buscar destino")
         print("4. Actualizar destino")
         print("5. Eliminar destino")
-        print("6. Salir")
+        print("0. Salir")
+        print("="*50)
         op = input("Opción: ")
 
         if op == "1":
@@ -112,7 +116,9 @@ def menuDestinos():
             actualizar_destino()
         elif op == "5":
             eliminar_destino()
-        elif op == "6":
+        elif op == "0":
+            print("Volviendo al menú...")
+            print()
             salir = True
         else:
             print("⚠️ Opción inválida.")

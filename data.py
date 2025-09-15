@@ -18,27 +18,28 @@ Destinos = [
     [5, "Japon", "Tecnologia y tradicion en Tokio y Kioto"],
 ]
 
-referenciaVuelos = ["ID", "Empresa", "IDDestino" "FechaLlegada", "Escala"]
+referenciaVuelos = ["ID", "IDAerolinea", "IDDestino" "FechaLlegada", "Escala"]
 Vuelos = [
-    [1, "LATAM", 1, "2025-09-10", "Directo"],
-    [2, "Iberia", 2, "2025-09-15", "Escala en Paris"],
-    [3, "Aeromexico", 3, "2025-10-05", "Directo"],
-    [4, "Alitalia", 4, "2025-09-22", "Escala en Frankfurt"],
-    [5, "ANA", 5, "2025-11-01", "Directo"],
+    [1, 1, 1, "2025-09-10", "Directo"],
+    [2, 5, 2, "2025-09-15", "Escala en Panama"],
+    [3, 4, 3, "2025-10-05", "Directo"],
+    [4, 3, 4, "2025-09-22", "Escala en Frankfurt"],
+    [5, 2, 5, "2025-11-01", "Directo"],
     ]
 
 
 referenciaAerolinea = ["ID", "Nombre", "Modelo"]
 Aerolinea = [
-    [1, "Aerolineaa Argentina", "Airbus A330-200"],
+    [1, "Aerolineas Argentina", "Airbus A330-200"],
     [2, "Qatar Airways", "Boeing 777"],
     [3, "Copa", "Boeing 737 MAX 9-A"],
-    [4, "Flybondi", "Airbus A320"],
-    [5, "JetSMART", "Airbus A321neo"],   
+    [4, "Iberia", "Airbus A350"],
+    [5, "LATAM", "Boeing 787"],   
 ]
 
 referenciaVueloPasajero = ["ID","IdPasajero", "IdVuelo"]
 VueloPasajero = [[1, 1, 2], 
                  [2,1,1], 
-                 [3,4,3]]
+                 [3,4,3],
+                 [4,1,5]]
 vuelo_pasajero = [dict(zip(referenciaVueloPasajero,fila)) for fila in VueloPasajero ]
