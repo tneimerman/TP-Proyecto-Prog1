@@ -1,4 +1,4 @@
-from data import referenciaVuelos, Vuelos, Destinos
+from data import referenciaVuelos, Vuelos, Destinos, Aerolinea
 from CRUDs.Destinos import mostrar_destinos 
 
 def getNewIdVuelo():
@@ -131,7 +131,7 @@ def eliminar_vuelo():
     return None
 
 
-def menuVuelos():
+def menu_vuelo():
     while True:
         print("\n--- Menú Vuelos ---")
         print("1. Registrar vuelo")
@@ -156,4 +156,4 @@ def menuVuelos():
             print("Saliendo del menú de vuelos...")
             break
         else:
-            print("Opción inválida.")
+            print("Opción inválida.")

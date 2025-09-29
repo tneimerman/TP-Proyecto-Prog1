@@ -3,7 +3,7 @@ from data import referenciaPasajeros, Pasajeros
 import re
 def validar_mail(mail):
 
-    if re.search(r"^[^\s@]+@[^\s@]+\.[^\s@]+$", mail) == None:
+    if re.search("@", mail) == None:
         return False, "Formato de mail inválido."
     return True, ""
 
@@ -151,7 +151,6 @@ def buscarPasajero(dato):
 
       
 def get_new_id():
-    """ID autoincremental robusto (toma max + 1, no len)."""
     max_id = 0
     i = 0
     while i < len(Pasajeros):
@@ -345,4 +344,4 @@ def menu_pasajeros(id_pasajero=0):
                 salir = True
             case _:
                 print("Opción inválida.")
-    return id_pasajero 
+    return id_pasajero
