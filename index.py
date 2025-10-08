@@ -10,7 +10,7 @@ if __name__ == "__main__":
     while bandera:
         print("\n" + "="*50)
         print(" Elija una opcion:")
-        print(" 1. Gestionar pasajeros\n 2. Gestionar aerolineas\n 3. Gestionar destinos\n 4. Gestionar vuelos\n 5. Gestionar vuelos de pasajeros\n 0. Salir")
+        print(f" 1. Gestionar pasajeros\n 2. Gestionar aerolineas\n 3. Gestionar destinos\n 4. Gestionar vuelos\n 5. Gestionar vuelos de pasajeros\n 0. Salir")
         print("="*50)
         op = input("Opción: ")
         match op:
@@ -23,8 +23,11 @@ if __name__ == "__main__":
             case "4":
                 CRUDs.menu_vuelo()
             case "5":
-                
-                CRUDs.menu_vuelo_pasajero()  
+                try:
+                    if idp != 0:
+                        CRUDs.menu_vuelo_pasajero()
+                except:
+                    raise PermissionError("Primero debes iniciar sesion para acceder a esta opcion")
             case "0":
                 print("Gracias por usar el sistema!")
                 bandera = False

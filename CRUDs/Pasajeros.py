@@ -3,7 +3,7 @@ from data import referenciaPasajeros, Pasajeros
 import re
 def validar_mail(mail):
 
-    if re.search("@", mail) == None:
+    if re.search("[A-Za-z]@[A-Za-z].[A-Za-z]", mail) == None:
         return False, "Formato de mail inválido."
     return True, ""
 
@@ -13,12 +13,12 @@ def validar_dni(dni):
     return True, ""
 
 def validar_telefono(tel):
-    if tel.isdigit() == False:
+    if re.search("11[0-9]{8}",tel) == False:
         return False, "El teléfono debe ser solo dígitos."
     return True, ""
 
 def validar_fecha(fecha):
-    if re.search(r"^\d{4}-\d{2}-\d{2}$", fecha) is None:
+    if re.search("[0-9]{4}-[0-9]{2}-[0-9]{2}", fecha) is None:
         return False, "Formato de fecha inválido (use AAAA-MM-DD)."
     return True, ""
 def displayActualizar():
@@ -165,6 +165,7 @@ def datos_pasajero(id_pasajero):
     print("="*28)
     print(f"Datos del pasajero")
     print("="*28)
+    
     print(f"╔{"="*28}╗")
     if id_pasajero == 0:
         print("Inicie sesión para ver sus datos.")
@@ -323,22 +324,23 @@ def menu_pasajeros(id_pasajero=0):
 
                 id_pasajero = login()
             case "3":
-                if id_pasajero != 0:
-                    actualizar(id_pasajero)
-                else:
-                    print("Primero iniciá sesión.")
+                try:
+                    if id_pasajero != 0:
+                        actualizar(id_pasajero)
+                except PermissionError:
+                    print("Primero inicie sesion para acceder a esta opcion", PermissionError)
             case "4":
-                if id_pasajero != 0:
-                    eliminar(id_pasajero)
-                    salir = True
-                    id_pasajero = 0
-                else:
-                    print("Primero iniciá sesión.")
+                try:
+                    if id_pasajero != 0:
+                        eliminar(id_pasajero)
+                except PermissionError:
+                    print("Primero inicie sesion para acceder a esta opcion", PermissionError)
             case "5":
-                if id_pasajero != 0:
-                    datos_pasajero(id_pasajero)
-                else:
-                    print("Primero iniciá sesión.")
+                try:
+                    if id_pasajero != 0:
+                        datos_pasajero(id_pasajero)
+                except PermissionError:
+                    print("Primero inicie sesion para acceder a esta opcion", PermissionError)
             case "0":
                 print("Volviendo al menú...")
                 salir = True
