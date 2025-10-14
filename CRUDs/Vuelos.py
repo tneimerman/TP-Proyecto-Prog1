@@ -1,19 +1,26 @@
-from data import referenciaVuelos, Vuelos, Destinos, Aerolinea
+from data import referenciaVuelos, Vuelos, Destinos, Aerolinea, referenciaDestinos,referenciaAerolinea
 from CRUDs.Destinos import mostrar_destinos 
 
-def getNewIdVuelo():
+def get_new_id_vuelo():
     if len(Vuelos) == 0:
         return 1
     ids = []
     for v in Vuelos:
         ids.append(v[0])
     return max(ids) + 1
+def get_destinos():
+    print("--- Seleccione un destino ---")
+    print(f"{referenciaDestinos[0]:<5} {referenciaDestinos[1]:<20}")
+    for i in Destinos:
+        print(f"{i[0]:<5}")
+    op = int(input("Seleccion: "))
+    return Destinos[op-1]
 
 # CREATE
 def registrar_vuelo():
     print("\n--- Registro de Vuelo ---")
     nuevo = []
-    nuevo_id = getNewIdVuelo()
+    nuevo_id = get_new_id_vuelo()
     nuevo.append(nuevo_id)
 
     empresa = input("Ingrese nombre de la empresa: ")

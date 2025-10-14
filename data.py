@@ -2,10 +2,9 @@
 
 referenciaPasajeros = ["ID", "Contraseña","Mail", "DNI", "Nombre", "Apellido", "Telefono", "Fecha Nacimiento"]
 Pasajeros = [
-    [0,"","","","","","",""],
     [1, "12345","jperez@gmail.com", "40123456", "Juan", "Perez", "1134567890", "1990-05-14"],
     [2, "23456", "mgonzalez@yahoo.com.ar", "39234567", "Maria", "Gonzalez", "1145678901", "1987-10-22"],
-    [3, "35467","carlosramirez@gmail.com" "38456789", "Carlos", "Ramirez", "1156789012", "1995-07-03"],
+    [3, "35467","carlosramirez@gmail.com", "38456789", "Carlos", "Ramirez", "1156789012", "1995-07-03"],
     [4, "45678","lufernandez@hotmail.com", "41234567", "Lucia", "Fernandez", "1167890123", "1992-01-19"],
     [5, "56789","anamartinez@yahoo.com.ar", "37567890", "Ana", "Martinez", "1178901234", "1985-03-28"],
 ]
@@ -19,7 +18,7 @@ Destinos = [
     [5, "Japon", "Tecnologia y tradicion en Tokio y Kioto"],
 ]
 
-referenciaVuelos = ["ID", "IDAerolinea", "IDDestino" "FechaLlegada", "Escala"]
+referenciaVuelos = ["ID", "IDAerolinea", "IDDestino", "FechaLlegada", "Escala"]
 Vuelos = [
     [1, 1, 1, "2025-09-10", "Directo"],
     [2, 5, 2, "2025-09-15", "Escala en Panama"],
