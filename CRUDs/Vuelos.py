@@ -12,10 +12,36 @@ def get_destinos():
     print("--- Seleccione un destino ---")
     print(f"{referenciaDestinos[0]:<5} {referenciaDestinos[1]:<20}")
     for i in Destinos:
-        print(f"{i[0]:<5}")
+        print(f"{i[0]:<5} {i[1]:<20}")
     op = int(input("Seleccion: "))
-    return Destinos[op-1]
+    return Destinos[op-1][0]
+def get_aerolineas():
+    print("--- Seleccione una aerolinea ---")
+    print(f"{referenciaAerolinea[0]:<5} {referenciaAerolinea[1]:<20}")
+    for i in Aerolinea:
+        print(f"{i[0]:<5} {i[1]:<20}")
+    op = int(input("Seleccion: "))
+    return Aerolinea[op-1][0]
+def get_ref_vuelo(pos, ref):
+    for x in Vuelos:
+        if x[pos] == ref:
+            return x
+def show_results(data):
+    for aero in Aerolinea:
+        if aero[0] == data[1]:
+            data[1] = aero[1]
+            break
+    for dest in Destinos:
+        if dest[0] == data[2]:
+            data[2] = dest[1]
+            break
+    print(f"╔{"="*58}╗")
+    print(f"║{"Aerolinea":<10}║{"Destino":<10}║{referenciaVuelos[3]:<15}║{referenciaVuelos[4]:<20}║")
+    print(f"╠{"="*58}╣")
+    print(f"║{data[1]:<10}║{data[2]:<10}║{data[3]:<15}║{data[4]:<20}║")
+    print(f"╚{"="*58}╝")
 
+    
 # CREATE
 def registrar_vuelo():
     print("\n--- Registro de Vuelo ---")
@@ -65,25 +91,23 @@ def mostrar_vuelos():
 
 
 def buscar_vuelo():
-    criterio = input("Ingrese empresa o destino a buscar: ")
-    encontrados = []
-    for v in Vuelos:
-        destino = ""
-        for d in Destinos:
-            if d[0] == v[2]:
-                destino = d[1]
-        if criterio in v[1] or criterio in destino:
-            encontrados.append(v)
-    if len(encontrados) > 0:
-        print("\nResultados:")
-        for v in encontrados:
-            destino = "N/A"
-            for d in Destinos:
-                if d[0] == v[2]:
-                    destino = d[1]
-            print("ID:", v[0], "-", v[1], "→", destino, v[3], "(", v[4], ")")
-    else:
-        print("No se encontraron coincidencias.")
+    found = 0
+    print("\n--- Buscar Vuelos ---")
+    criterio = int(input("Seleccione por que valor quiere buscar: \n1. Destinos \n2. Aerolineas \n"))
+    match criterio:
+        case 1:
+            elec = get_destinos()
+            found = get_ref_vuelo(1,elec)
+        case 2: 
+            elec = get_aerolineas()
+            found = get_ref_vuelo(2,elec)
+        case _:
+            print("Opcion incorrecta")
+    show_results(found)
+    
+        
+            
+   
 
 # UPDATE
 def actualizar_vuelo():
