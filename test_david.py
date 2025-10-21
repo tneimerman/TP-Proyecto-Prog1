@@ -1,5 +1,5 @@
 from data import Vuelos, Aerolinea, Destinos, referenciaVuelos
-elec = Vuelos[3]
+
 found = []
 def show_results(data):
     for aero in Aerolinea:
@@ -15,5 +15,5 @@ def show_results(data):
     print(f"╠{"="*58}╣")
     print(f"║{data[1]:<10}║{data[2]:<10}║{data[3]:<15}║{data[4]:<20}║")
     print(f"╚{"="*58}╝")
-print(elec)
-show_results(elec)
+
+assert show_results(Vuelos[3]) == Vuelos[3]

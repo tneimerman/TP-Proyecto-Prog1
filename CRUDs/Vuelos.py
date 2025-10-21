@@ -2,12 +2,7 @@ from data import referenciaVuelos, Vuelos, Destinos, Aerolinea, referenciaDestin
 from CRUDs.Destinos import mostrar_destinos 
 
 def get_new_id_vuelo():
-    if len(Vuelos) == 0:
-        return 1
-    ids = []
-    for v in Vuelos:
-        ids.append(v[0])
-    return max(ids) + 1
+    return len(Vuelos) + 1
 def get_destinos():
     print("--- Seleccione un destino ---")
     print(f"{referenciaDestinos[0]:<5} {referenciaDestinos[1]:<20}")
@@ -49,26 +44,13 @@ def registrar_vuelo():
     nuevo_id = get_new_id_vuelo()
     nuevo.append(nuevo_id)
 
-    empresa = input("Ingrese nombre de la empresa: ")
-    nuevo.append(empresa)
-
-    # IDDestino (validar que exista)
-    mostrar_destinos()
-    try:
-        iddest = int(input("Ingrese ID del destino: "))
-        existe = False
-        for d in Destinos:
-            if d[0] == iddest:
-                existe = True
-        if not existe:
-            print("Ese destino no existe.")
-            return None
-        nuevo.append(iddest)
-    except ValueError:
-        print("ID destino inválido.")
-        return None
+    aero = get_aerolineas()
+    nuevo.append(aero)
+    dest = get_destinos()
+    nuevo.append(dest)
 
     fecha = input("Ingrese fecha de llegada (AAAA-MM-DD): ")
+    
     nuevo.append(fecha)
 
     escala = input("Ingrese escala (Directo o con escala): ")

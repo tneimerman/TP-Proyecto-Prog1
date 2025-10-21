@@ -1,26 +1,6 @@
 # CRUDs/Pasajeros.py
 from data import referenciaPasajeros, Pasajeros
-import re
-def validar_mail(mail):
-
-    if re.search("[A-Za-z]@[A-Za-z].[A-Za-z]", mail) == None:
-        return False, "Formato de mail inválido."
-    return True, ""
-
-def validar_dni(dni):
-    if  dni.isdigit() == False:
-        return False, "El DNI debe ser solo dígitos."
-    return True, ""
-
-def validar_telefono(tel):
-    if re.search("11[0-9]{8}",tel) == False:
-        return False, "El teléfono debe ser solo dígitos."
-    return True, ""
-
-def validar_fecha(fecha):
-    if re.search("[0-9]{4}-[0-9]{2}-[0-9]{2}", fecha) is None:
-        return False, "Formato de fecha inválido (use AAAA-MM-DD)."
-    return True, ""
+from CRUDs.Validaciones import validar_dni,validar_fecha,validar_mail,validar_telefono
 def displayActualizar():
     start = referenciaPasajeros.index("Contraseña")
     for i, campo in enumerate(referenciaPasajeros[start:], start=start):
@@ -48,25 +28,27 @@ def funcionActualizar(op,idp):
             Pasajeros[idPasajero][contra] = nuevaContra
             return True
         case "2":
-            while valid_mail == False:
-                print("Inserte el nuevo mail:")
-                nuevoMail = input()
-                valid_mail, msg = validar_mail(nuevoMail)
-                if valid_mail == False:
-                    print(msg)
-                else:
+            while True:
+                try:
+                    print("Inserte el nuevo mail:")
+                    nuevoMail = input()
+                    valid_mail = validar_mail(nuevoMail)
                     Pasajeros[idPasajero][mail] = nuevoMail
-                    return True
+                    break
+                except ValueError:
+                    print("Mail invalido, intente devuelta")
+                    continue
         case "3":
-            while valid_DNI == False:
-                print("Inserte el nuevo DNI:")
-                nuevoDNI = input()
-                valid_DNI, msg = validar_dni(nuevoDNI)
-                if valid_DNI == False:
-                    print(msg)
-                else:
+            while True:
+                try:
+                    print("Inserte el nuevo DNI:")
+                    nuevoDNI = input()
+                    valid_DNI = validar_dni(nuevoDNI)
                     Pasajeros[idPasajero][dni] = nuevoDNI
-                    return True
+                    break
+                except ValueError:
+                    print("DNI invalido, intente denuevo")
+                    continue
         case "4":
             print("Inserte el nuevo nombre:")
             nuevoNombre = input()
@@ -78,86 +60,42 @@ def funcionActualizar(op,idp):
             Pasajeros[idPasajero][apellido] = nuevoApellido
             return True
         case "6":
-            while valid_tel == False:
-                print("Inserte el nuevo telefono:")
-                nuevoTelefono = input()
-                valid_tel, msg = validar_telefono(nuevoTelefono)
-                if valid_tel == False:
-                    print(msg)
-                else:
+            while True:
+                try:
+                    print("Inserte el nuevo telefono:")
+                    nuevoTelefono = input()
+                    valid_tel  = validar_telefono(nuevoTelefono)
                     Pasajeros[idPasajero][telefono] = nuevoTelefono
-                    return True
+                    break
+                except ValueError:
+                    print("Telefono invalido, intente denuevo")
+                    continue
+                    
         case "7":
-            while valid_fecha == False:
-                print("Inserte la nueva fecha de nacimiento:")
-                nuevaFecha = input()
-                valid_fecha, msg = validar_fecha(nuevaFecha)
-                if valid_fecha == False:
-                    print(msg)
-                else:
+            while True:
+                try:
+                    print("Inserte la nueva fecha de nacimiento:")
+                    nuevaFecha = input()
+                    valid_fecha = validar_fecha(nuevaFecha)
                     Pasajeros[idPasajero][fecha] = nuevaFecha
-                    return True
-        case "8": 
-            print("Inserte la nueva contraseña:")
-            nuevaContra = input()
-            Pasajeros[idPasajero][contra] = nuevaContra
-            while valid_mail == False:
-                print("Inserte el nuevo mail:")
-                nuevoMail = input()
-                valid_mail, msg = validar_mail(nuevoMail)
-                if valid_mail == False:
-                    print(msg)
-                else:
-                    Pasajeros[idPasajero][mail] = nuevoMail
-            while valid_DNI == False:
-                print("Inserte el nuevo DNI:")
-                nuevoDNI = input()
-                valid_DNI, msg = validar_dni(nuevoDNI)
-                if valid_DNI == False:
-                    print(msg)
-                else:
-                    Pasajeros[idPasajero][dni] = nuevoDNI
-            print("Inserte el nuevo nombre:")
-            nuevoNombre = input()
-            Pasajeros[idPasajero][nombre] = nuevoNombre
-            print("Inserte el nuevo apellido:")
-            nuevoApellido = input()
-            Pasajeros[idPasajero][apellido] = nuevoApellido
-            while valid_tel == False:
-                print("Inserte el nuevo telefono:")
-                nuevoTelefono = input()
-                valid_tel, msg = validar_telefono(nuevoTelefono)
-                if valid_tel == False:
-                    print(msg)
-                else:
-                    Pasajeros[idPasajero][telefono] = nuevoTelefono
-            while valid_fecha == False:
-                print("Inserte la nueva fecha de nacimiento:")
-                nuevaFecha = input()
-                valid_fecha, msg = validar_fecha(nuevaFecha)
-                if valid_fecha == False:
-                    print(msg)
-                else:
-                    Pasajeros[idPasajero][fecha] = nuevaFecha
-            return True
+                    break
+                except ValueError:
+                    print("Fecha invalida, intente denuevo")
+                    continue
+        case _:
+            print("Opcion invalida")
         
 
 def buscarPasajero(dato):
-    for i in range(len(Pasajeros)):
-        x = i
-        for j in range(len(Pasajeros[i])):
-            if Pasajeros[i][j] == dato:
+    for x in Pasajeros:
+        for y in x:
+            if y == dato:
                 return x
+        
 
       
 def get_new_id():
-    max_id = 0
-    i = 0
-    while i < len(Pasajeros):
-        if Pasajeros[i][0] > max_id:
-            max_id = Pasajeros[i][0]
-        i += 1
-    return max_id + 1
+    return len(Pasajeros)+1
 
 
 
@@ -310,7 +248,7 @@ def menu_pasajeros(id_pasajero=0):
 
         if id_pasajero != 0:
             try:
-                print(f"\nSesión iniciada: {Pasajeros[id_pasajero][4]} {Pasajeros[id_pasajero][5]} (ID {id_pasajero})")
+                print(f"\nSesión iniciada: {Pasajeros[id_pasajero-1][4]} {Pasajeros[id_pasajero-1][5]} (ID {id_pasajero})")
             except Exception:
 
                 print(f"\nSesión iniciada con ID {id_pasajero} (registro no disponible)")
