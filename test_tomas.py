@@ -1,4 +1,4 @@
-from CRUDs.Validaciones import validar_mail
+from Helpers.Validaciones import validar_mail
 from data import Pasajeros
 idPasajero = 1
 

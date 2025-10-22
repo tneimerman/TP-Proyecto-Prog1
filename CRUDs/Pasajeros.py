@@ -1,6 +1,6 @@
 # CRUDs/Pasajeros.py
 from data import referenciaPasajeros, Pasajeros
-from CRUDs.Validaciones import validar_dni,validar_fecha,validar_mail,validar_telefono
+from Helpers.Validaciones import validar_dni,validar_fecha,validar_mail,validar_telefono
 def displayActualizar():
     start = referenciaPasajeros.index("Contraseña")
     for i, campo in enumerate(referenciaPasajeros[start:], start=start):
