@@ -124,23 +124,27 @@ def registro():
 
     # Mail (solo formato)
     while True:
-        mail = input("Ingrese su Mail: ")
-        ok, msg = validar_mail(mail)
-        if ok != True:
-            print(msg)
-            continue
-        nuevo.append(mail)
-        break
+        try:
+            print("Inserte el nuevo mail:")
+            nuevoMail = input()
+            valid_mail = validar_mail(nuevoMail)
+            nuevo.append(valid_mail)
+            break
+        except ValueError:
+                print("Mail invalido, intente devuelta")
+                continue
 
     # DNI (solo dígitos)
     while True:
-        dni = input("Ingrese su DNI: ")
-        ok, msg = validar_dni(dni)
-        if ok != True:
-            print( msg)
+        try:
+            print("Inserte el nuevo DNI:")
+            nuevoDNI = input()
+            valid_DNI = validar_dni(nuevoDNI)
+            nuevo.append(valid_DNI)
+            break
+        except ValueError:
+            print("DNI invalido, intente denuevo")
             continue
-        nuevo.append(dni)
-        break
 
     nombre = input("Ingrese su Nombre: ")
     nuevo.append(nombre)
@@ -149,23 +153,28 @@ def registro():
 
     # Teléfono (solo dígitos)
     while True:
-        tel = input("Ingrese su Teléfono: ")
-        ok, msg = validar_telefono(tel)
-        if  ok != True:
-            print( msg)
+        try:
+            print("Inserte el nuevo telefono:")
+            nuevoTelefono = input()
+            valid_tel  = validar_telefono(nuevoTelefono)
+            nuevo.append(valid_tel)
+            break
+        except ValueError:
+            print("Telefono invalido, intente denuevo")
             continue
-        nuevo.append(tel)
-        break
+                    
 
     # Fecha Nacimiento (patrón simple)
     while True:
-        fecha = input("Ingrese su Fecha de Nacimiento (AAAA-MM-DD): ")
-        ok, msg = validar_fecha(fecha)
-        if ok != True:
-            print( msg)
+        try:
+            print("Inserte la nueva fecha de nacimiento:")
+            nuevaFecha = input()
+            valid_fecha = validar_fecha(nuevaFecha)
+            nuevo.append(valid_fecha)
+            break
+        except ValueError:
+            print("Fecha invalida, intente denuevo")
             continue
-        nuevo.append(fecha)
-        break
 
     Pasajeros.append(nuevo)
     print("Pasajero registrado con ID:", nuevo_id)
@@ -176,12 +185,14 @@ def login():
 
     print("\n--- Login ---")
     while True:
-        mail = input("Mail: ")
-
-        ok, msg = validar_mail(mail)
-        if ok == False:
-            print( msg)
-            continue
+        while True:
+            try:
+                mail = input("Mail: ")
+                valid_mail = validar_mail(mail)
+                break
+            except ValueError:
+                print("Mail invalido, intente devuelta")
+                continue
 
         contr = input("Contraseña: ")
 

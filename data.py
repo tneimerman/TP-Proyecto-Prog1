@@ -20,11 +20,11 @@ Destinos = [
 
 referenciaVuelos = ["ID", "IDAerolinea", "IDDestino", "FechaLlegada", "Escala"]
 Vuelos = [
-    [1, 1, 1, "2025-09-10", "Directo"],
-    [2, 5, 2, "2025-09-15", "Escala en Panama"],
-    [3, 4, 3, "2025-10-05", "Directo"],
-    [4, 3, 4, "2025-09-22", "Escala en Frankfurt"],
-    [5, 2, 3, "2025-11-01", "Directo"],
+    [1, 1, 1, "2025/09/10", "Directo"],
+    [2, 5, 2, "2025/09/15", "Escala en Panama"],
+    [3, 4, 3, "2025/10/05", "Directo"],
+    [4, 3, 4, "2025/09/22", "Escala en Frankfurt"],
+    [5, 2, 3, "2025/11/01", "Directo"],
     ]
 
 

@@ -7,11 +7,7 @@ import re
 from functools import reduce
 
 def obtener_nuevo_id():
-    """Obtiene el siguiente ID disponible para VueloPasajero"""
-    if not VueloPasajero:
-        return 1
-    ids_existentes = list(map(lambda x: x[0], VueloPasajero))
-    return max(ids_existentes) + 1
+    return len(VueloPasajero) + 1
 
 # Validaciones de IDs en las matrices
 def validar_id_pasajero(id_pasajero):

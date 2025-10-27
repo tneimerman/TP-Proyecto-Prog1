@@ -5,7 +5,8 @@ from Helpers.Validaciones import validar_fecha
 def get_fecha():
     while True:
         try:
-            fecha = input("Ingrese fecha de llegada (AAAA-MM-DD): ")
+            fecha = input("Ingrese fecha de llegada (AAAA/MM/DD): ")
+            validar_fecha(fecha)
             return fecha
         except ValueError:
             print("Fecha invalida, intente denuevo")
@@ -88,7 +89,10 @@ def mostrar_vuelos():
         for d in Destinos:
             if d[0] == v[2]:
                 destino = d[1]
-        print(v[0], "-", v[1], "-", destino, "-", v[3], "-", v[4])
+        for a in Aerolinea:
+            if a[0] == v[1]:
+                aerolinea = a[1]
+        print(v[0], "-", aerolinea, "-", destino, "-", v[3], "-", v[4])
 
 
 def buscar_vuelo():
@@ -112,36 +116,29 @@ def buscar_vuelo():
 
 # UPDATE
 def actualizar_vuelo():
+    vuelo = []
     mostrar_vuelos()
     try:
         vid = int(input("Ingrese ID del vuelo a actualizar: "))
         for v in Vuelos:
-            if v[0] == vid:
-                print("Vuelo actual:", v[1], "-", v[2], "-", v[3], "-", v[4])
-                nueva_emp = input("Nueva empresa (Enter para mantener): ")
-                if nueva_emp != "":
-                    v[1] = nueva_emp
-                mostrar_destinos()
-                nuevo_dest = input("Nuevo ID destino (Enter para mantener): ")
-                if nuevo_dest != "":
-                    try:
-                        nuevo_dest = int(nuevo_dest)
-                        existe = False
-                        for d in Destinos:
-                            if d[0] == nuevo_dest:
-                                existe = True
-                        if existe:
-                            v[2] = nuevo_dest
-                    except ValueError:
-                        print("Destino inválido, se mantiene el anterior.")
-                nueva_fecha = get_fecha()
-                v[3] = nueva_fecha
-                nueva_escala = input("Nueva escala (Enter para mantener): ")
-                if nueva_escala != "":
-                    v[4] = nueva_escala
-                print("Vuelo actualizado.")
-                return vid
-        print("No se encontró vuelo con ese ID.")
+            if vid == v[0]:
+                vuelo = v
+                break
+        op = input(f"Elija una opción: \n1. Cambiar aerolinea \n2. Cambiar destino \n3. Cambiar fecha de llegada \n4. Cambiar escala \n")
+        match op:
+            case "1":
+                aero = get_aerolineas()
+                Vuelos[vuelo[0]][1] = aero
+            case "2":
+                dest = get_destinos()
+                Vuelos[vuelo[0]][2] = dest
+            case "3":
+                fecha = get_fecha()
+                Vuelos[vuelo[0]][3] = fecha
+            case "4":
+                escala = input("Ingrese escala (Directo o con escala): ")
+                Vuelos[vuelo[0]][4] = escala
+    
     except ValueError:
         print("ID inválido.")
 
