@@ -1,11 +1,12 @@
 # CRUDs/Pasajeros.py
 from data import referenciaPasajeros, Pasajeros
 from Helpers.Validaciones import validar_dni,validar_fecha,validar_mail,validar_telefono
+def show_list(list):
+    if len(list) > 0:
+        print(f"{referenciaPasajeros.index(list[0])} {list[0]}")
+        show_list(list[1:])
 def displayActualizar():
-    start = referenciaPasajeros.index("Contraseña")
-    for i, campo in enumerate(referenciaPasajeros[start:], start=start):
-        print(f"{i}. {campo}")
-    print("8. Todo")
+
     op = input()
     return op
 def getPosMatriz():
