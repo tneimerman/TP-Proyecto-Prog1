@@ -2,31 +2,23 @@
 from data import referenciaPasajeros, Pasajeros
 from Helpers.Validaciones import validar_dni,validar_fecha,validar_mail,validar_telefono
 def show_list(list):
-    if len(list) > 0:
-        print(f"{referenciaPasajeros.index(list[0])} {list[0]}")
+    if len(list) > 1:
+        print(f"{referenciaPasajeros.index(list[1])}. {list[1]}")
         show_list(list[1:])
 def displayActualizar():
-
+    print("Seleccione una opcion para actualizar")
+    show_list(referenciaPasajeros)
     op = input()
     return op
-def getPosMatriz():
-    contra = referenciaPasajeros.index("Contraseña")
-    mail = referenciaPasajeros.index("Mail")
-    dni = referenciaPasajeros.index("DNI")
-    nombre = referenciaPasajeros.index("Nombre")
-    apellido = referenciaPasajeros.index("Apellido")
-    telefono = referenciaPasajeros.index("Telefono")
-    fecha = referenciaPasajeros.index("Fecha Nacimiento")
-    return contra, mail, dni, nombre, apellido, telefono, fecha
 def funcionActualizar(op,idp):
     idPasajero = idp - 1
-    contra, mail, dni, nombre, apellido, telefono, fecha = getPosMatriz()
-    valid_mail, valid_DNI, valid_tel, valid_fecha = False, False, False, False
+    
+    op = displayActualizar()
     match op:
         case "1":
             print("Inserte la nueva contraseña:")
             nuevaContra = input()
-            Pasajeros[idPasajero][contra] = nuevaContra
+            Pasajeros[idPasajero][op] = nuevaContra
             return True
         case "2":
             while True:
@@ -34,7 +26,7 @@ def funcionActualizar(op,idp):
                     print("Inserte el nuevo mail:")
                     nuevoMail = input()
                     valid_mail = validar_mail(nuevoMail)
-                    Pasajeros[idPasajero][mail] = nuevoMail
+                    Pasajeros[idPasajero][op] = nuevoMail
                     break
                 except ValueError:
                     print("Mail invalido, intente devuelta")
@@ -45,7 +37,7 @@ def funcionActualizar(op,idp):
                     print("Inserte el nuevo DNI:")
                     nuevoDNI = input()
                     valid_DNI = validar_dni(nuevoDNI)
-                    Pasajeros[idPasajero][dni] = nuevoDNI
+                    Pasajeros[idPasajero][op] = nuevoDNI
                     break
                 except ValueError:
                     print("DNI invalido, intente denuevo")
@@ -53,12 +45,12 @@ def funcionActualizar(op,idp):
         case "4":
             print("Inserte el nuevo nombre:")
             nuevoNombre = input()
-            Pasajeros[idPasajero][nombre] = nuevoNombre
+            Pasajeros[idPasajero][op] = nuevoNombre
             return True
         case "5":
             print("Inserte el nuevo apellido:")
             nuevoApellido = input()
-            Pasajeros[idPasajero][apellido] = nuevoApellido
+            Pasajeros[idPasajero][op] = nuevoApellido
             return True
         case "6":
             while True:
@@ -66,7 +58,7 @@ def funcionActualizar(op,idp):
                     print("Inserte el nuevo telefono:")
                     nuevoTelefono = input()
                     valid_tel  = validar_telefono(nuevoTelefono)
-                    Pasajeros[idPasajero][telefono] = nuevoTelefono
+                    Pasajeros[idPasajero][op] = nuevoTelefono
                     break
                 except ValueError:
                     print("Telefono invalido, intente denuevo")
@@ -78,7 +70,7 @@ def funcionActualizar(op,idp):
                     print("Inserte la nueva fecha de nacimiento:")
                     nuevaFecha = input()
                     valid_fecha = validar_fecha(nuevaFecha)
-                    Pasajeros[idPasajero][fecha] = nuevaFecha
+                    Pasajeros[idPasajero][op] = nuevaFecha
                     break
                 except ValueError:
                     print("Fecha invalida, intente denuevo")
@@ -86,15 +78,11 @@ def funcionActualizar(op,idp):
         case _:
             print("Opcion invalida")
         
-
 def buscarPasajero(dato):
     for x in Pasajeros:
-        for y in x:
-            if y == dato:
-                return x
+        if dato in x:
+            return x
         
-
-      
 def get_new_id():
     return len(Pasajeros)+1
 
@@ -104,14 +92,12 @@ def datos_pasajero(id_pasajero):
     print("="*28)
     print(f"Datos del pasajero")
     print("="*28)
-    
     print(f"╔{"="*28}╗")
     if id_pasajero == 0:
         print("Inicie sesión para ver sus datos.")
     for i in range(len(Pasajeros[id_pasajero])):
         print(f"║{referenciaPasajeros[i]}: {Pasajeros[id_pasajero][i]}\n║{" "*28}║")
     print(f"╚{"="*28}╝")
-        
 
 def registro():
     print("\n--- Registro de pasajero ---")

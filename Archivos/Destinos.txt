@@ -1,0 +1,5 @@
+1;Brasil;Playas tropicales y carnaval en Rio de Janeiro
+2;Espana;Turismo cultural e historico en Madrid y Barcelona
+3;Mexico;Playas de Cancun y ruinas mayas
+4;Italia;Arte y gastronomia en Roma y Florencia
+5;Japon;Tecnologia y tradicion en Tokio y Kioto
