@@ -1,4 +1,5 @@
-from CRUDs.Pasajeros import show_list
+from CRUDs.Pasajeros import show_list, get_pasajero_by_id, datos_pasajero
 from data import referenciaPasajeros
 
-show_list(referenciaPasajeros)
+
+datos_pasajero(1)
