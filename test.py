@@ -1,5 +1,9 @@
-from CRUDs.Pasajeros import show_list, get_pasajero_by_id, datos_pasajero
+from CRUDs.Archivos import * 
 from data import referenciaPasajeros
 
 
-datos_pasajero(1)
+archivo_modulo = "Archivos/Vuelos.txt"
+
+aero = ["6", "Air France", "Boeing 777"]
+
+save_data("Archivos/Aerolinea.txt", aero)

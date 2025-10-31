@@ -1,7 +1,27 @@
 from data import referenciaVuelos, Vuelos, Destinos, Aerolinea, referenciaDestinos,referenciaAerolinea
 from CRUDs.Destinos import mostrar_destinos 
-from Helpers.Validaciones import validar_fecha
-
+from Helpers import validar_fecha,fix_info
+from CRUDs.Archivos import get_info_by_id
+archivo_modulo = "Archivos/Vuelos.txt"
+def get_vuelos(archivo):
+    try:
+        arch = open(archivo, "r", encoding="UTF-8")
+        for linea in arch:
+            lista = fix_info(linea)
+            aero = get_info_by_id(lista[1], "Archivos/Aerolinea.txt")
+            dest = get_info_by_id(lista[2], "Archivos/Destinos.txt")
+            lista[1] = aero[1]
+            lista[2] = dest[1]
+            for x in lista:
+                print(f"||{x:<20}||", end = " ")
+            print()
+    except OSError:
+        print("No se pudo leer el archivo")
+    finally:
+        try:
+            arch.close()
+        except:
+            print("No se pudo cerrar el archivo")
 def get_fecha():
     while True:
         try:
@@ -83,16 +103,10 @@ def registrar_vuelo():
 # READ
 def mostrar_vuelos():
     print("\n--- Lista de Vuelos ---")
-    print("ID | Empresa | Destino | Fecha | Escala")
-    for v in Vuelos:
-        destino = "N/A"
-        for d in Destinos:
-            if d[0] == v[2]:
-                destino = d[1]
-        for a in Aerolinea:
-            if a[0] == v[1]:
-                aerolinea = a[1]
-        print(v[0], "-", aerolinea, "-", destino, "-", v[3], "-", v[4])
+    print(f"||{"ID":<20}|| ||{"Empresa":<20}|| ||{"Destino":<20}|| ||{"Fecha":<20}|| ||{"Escala":<20}||")
+    print("="*124)
+    get_vuelos(archivo_modulo)
+
 
 
 def buscar_vuelo():

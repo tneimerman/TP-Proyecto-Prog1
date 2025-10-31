@@ -1,21 +1,9 @@
 # CRUDs/Pasajeros.py
 from data import referenciaPasajeros, Pasajeros
+from CRUDs.Archivos import *
 from Helpers import * 
 archivo_modulo = "Archivos/Pasajeros.txt"
-def get_pasajero_by_id(id, archivo):
-    try:
-        arch = open(archivo, "r", encoding="UTF-8")
-        for linea in arch:
-            lista = fix_info(linea)
-            if str(id) == lista[0]:
-                return lista      
-    except OSError:
-        print("No se pudo leer el archivo")
-    finally:
-        try:
-            arch.close()
-        except:
-            print("No se pudo cerrar el archivo")
+
 def show_list(list):
     if len(list) > 1:
         print(f"{referenciaPasajeros.index(list[1])}. {list[1]}")
@@ -27,7 +15,7 @@ def displayActualizar():
     return op
 def funcionActualizar(op,idp):
     idPasajero = idp - 1
-    pasajero = get_pasajero_by_id(idPasajero, archivo_modulo)
+    pasajero = get_info_by_id(idPasajero, archivo_modulo)
     op = displayActualizar()
     match op:
         case "1":
@@ -105,7 +93,7 @@ def get_new_id():
 
 
 def datos_pasajero(id_pasajero):
-    lista = get_pasajero_by_id(id_pasajero, archivo_modulo)
+    lista = get_info_by_id(id_pasajero, archivo_modulo)
     referencia = f"║{referenciaPasajeros[0]:<5} {referenciaPasajeros[1]:<15} {referenciaPasajeros[2]:<20} {referenciaPasajeros[3]:<20} {referenciaPasajeros[4]:<15} {referenciaPasajeros[5]:<15} {referenciaPasajeros[6]:<15} {referenciaPasajeros[7]:<20}   ║"
     print("="*(len(referencia)-2))
     print(f"Datos del pasajero")
@@ -180,7 +168,7 @@ def registro():
             print("Fecha invalida, intente denuevo")
             continue
 
-    Pasajeros.append(nuevo)
+    save_data(archivo_modulo, nuevo)
     print("Pasajero registrado con ID:", nuevo_id)
     return nuevo_id
 
