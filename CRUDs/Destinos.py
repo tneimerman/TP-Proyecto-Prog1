@@ -3,11 +3,15 @@ from data import referenciaDestinos, Destinos
 def getNewIdDestino():
     if len(Destinos) == 0:
         return 1
-    ids = []
-    for d in Destinos:
-        ids.append(d[0])
-    return max(ids) + 1
+    return max_id_recursivo(Destinos) + 1
 
+def max_id_recursivo(lista, indice=0, maximo=None):
+    if indice == len(lista):
+        return maximo
+    
+    if maximo is None or lista[indice][0] > maximo:
+        maximo = lista[indice][0]
+        return max_id_recursivo(lista, indice + 1, maximo)
 # CREATE
 def registrar_destino():
     print("\n--- Registro de Destino ---")
