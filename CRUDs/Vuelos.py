@@ -1,7 +1,7 @@
 from data import referenciaVuelos, Vuelos, Destinos, Aerolinea, referenciaDestinos,referenciaAerolinea
 from CRUDs.Destinos import mostrar_destinos 
-from Helpers import validar_fecha,fix_info
-from CRUDs.Archivos import get_info_by_id
+from Helpers import validar_fecha
+from CRUDs.Archivos import get_info_by_id, fix_info
 archivo_modulo = "Archivos/Vuelos.txt"
 def get_vuelos(archivo):
     try:

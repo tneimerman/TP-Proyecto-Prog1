@@ -1,4 +1,10 @@
-from Helpers import fix_info
+import os
+
+def fix_info(l):
+    list = l.split(";")
+    list[-1] = list[-1].strip("\n")
+    return list
+
 def get_info_by_id(id, archivo):
     try:
         arch = open(archivo, "r", encoding="UTF-8")
@@ -31,16 +37,53 @@ def print_info(archivo):
 
 def save_data(matriz, archivo):
     try:
-        # Convertimos cada fila a string con punto y coma y salto de línea
-        lineas = [f"{x};" for x in matriz]
-        lineas = lineas[-1].replace(";", "\n")  # Última línea sin ;
-        arch = open(archivo, "wt")
-        arch.writelines(lineas)
+        arch = open(archivo, "a", encoding="UTF-8")
+        linea_fixed = ';'.join(str(x) for x in matriz) + '\n'
+        arch.write(linea_fixed) 
+        print("Agregado correctamente:", matriz)
+        
     except OSError as mensaje:
         print("No se puede grabar el archivo:", mensaje)
     finally:
         try:
             arch.close()
-            print(f'Archivo {archivo} creado con éxito')
         except NameError:
             pass
+def delete_data(archivo, id, list):
+    temp = "temp.txt"
+    encontrado = False
+
+    try:
+        arch = open(archivo, "rt", encoding="UTF-8")
+        aux = open(temp, "wt", encoding="UTF-8")
+        new_linea = (";".join(str(x) for x in list) + "\n")
+        for linea in arch:
+            datos = linea.strip().split(";")
+            codigo = datos[0]
+            if codigo != str(id):
+                aux.write(linea)
+            else:
+                aux.write(new_linea)
+                encontrado = True
+
+    except FileNotFoundError:
+        print("El archivo no existe.")
+    except OSError as error:
+        print("Error en el acceso al archivo:", error)
+    finally:
+        try:
+            arch.close()
+            aux.close()
+        except:
+            print("Error en el cierre del archivo:")
+
+    if encontrado:
+        try:
+            os.remove(archivo)       # elimina el original
+            os.rename(temp, archivo) # renombra el temporal
+            print(f"Linea con el id: {id} eliminado correctamente.")
+        except OSError as error:
+            print("Error al reemplazar el archivo:", error)
+    else:
+        os.remove(temp)  # eliminamos el temporal si no se usó
+        print(f"No se encontró el id: {id}.")
