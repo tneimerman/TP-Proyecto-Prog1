@@ -1,18 +1,13 @@
-from data import referenciaAerolinea, Aerolinea # type: ignore
+from data import referenciaAerolinea
 import re
 from functools import reduce
-
-def getNewId():
-    if len(Aerolinea) == 0:
-        return 1
-    ids = list(map(lambda x: x[0], Aerolinea))
-    return max(ids) + 1
-
+from CRUDs.Archivos import * 
+archivo_modulo = "Archivos/Aerolinea.txt"
 def registrar_aerolinea():
     """Registra una nueva aerolinea en el sistema"""
     print("\n--- Registro de Aerolinea ---")
     nueva_aerolinea = []
-    nuevo_id = getNewId()
+    nuevo_id = get_max_id()
     nueva_aerolinea.append(nuevo_id)
     
     # Validar nombre de la Aerolinea

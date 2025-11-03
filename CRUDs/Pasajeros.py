@@ -1,5 +1,5 @@
 # CRUDs/Pasajeros.py
-from data import referenciaPasajeros, Pasajeros
+from data import referenciaPasajeros
 from CRUDs.Archivos import *
 from Helpers import * 
 archivo_modulo = "Archivos/Pasajeros.txt"
@@ -15,7 +15,7 @@ def displayActualizar():
     return op
 def funcionActualizar(op,idp):
     idPasajero = idp - 1
-    pasajero = get_info_by_id(idPasajero, archivo_modulo)
+    pasajero = get_lista_by_dato(idPasajero, archivo_modulo)
     op = displayActualizar()
     match op:
         case "1":
@@ -82,32 +82,28 @@ def funcionActualizar(op,idp):
             print("Opcion invalida")
     
         
-def buscarPasajero(dato):
-    for x in Pasajeros:
-        if dato in x:
-            return x
-        
-def get_new_id():
-    return len(Pasajeros)+1
 
 
 
+def show_datos(lista):
+    if len(lista) > 0:
+        print(f"║{lista[0]:^20}║", end="")
+        show_datos(lista[1:])
 def datos_pasajero(id_pasajero):
-    lista = get_info_by_id(id_pasajero, archivo_modulo)
-    referencia = f"║{referenciaPasajeros[0]:<5} {referenciaPasajeros[1]:<15} {referenciaPasajeros[2]:<20} {referenciaPasajeros[3]:<20} {referenciaPasajeros[4]:<15} {referenciaPasajeros[5]:<15} {referenciaPasajeros[6]:<15} {referenciaPasajeros[7]:<20}   ║"
-    print("="*(len(referencia)-2))
+    lista = get_lista_by_dato(id_pasajero, archivo_modulo)
+    print("="*(180))
     print(f"Datos del pasajero")
-    print("="*(len(referencia)-2))
-    print(f"╔{"═"*(len(referencia)-2)}╗")
-    print(referencia)
-    print(f"╠{"═"*(len(referencia)-2)}╣")
-    print(f"║{lista[0]:<5} {lista[1]:<15} {lista[2]:<20} {lista[3]:<20} {lista[4]:<15} {lista[5]:<15} {lista[6]:<15} {lista[7]:<20}   ║")
-    print(f"╚{"═"*(len(referencia)-2)}╝")
+    print("="*(180))
+    print(f"╔{"═"*(180)}╗")
+    print(show_datos(referenciaPasajeros))
+    print(f"╠{"═"*(180)}╣")
+    print(f"║{show_datos(lista)}║")
+    print(f"╚{"═"*(180)}╝")
 
 def registro():
     print("\n--- Registro de pasajero ---")
     nuevo = []
-    nuevo_id = get_new_id()
+    nuevo_id = get_max_id(archivo_modulo)
     nuevo.append(nuevo_id)  # ID automático
 
     # Contraseña (mínimo: permitir cualquier string)
@@ -227,7 +223,8 @@ def eliminar(id_pasajero):
     print("="*50)
     sn = input(f"Esta seguro de eliminar el pasajero {Pasajeros[id_pasajero][4]} {Pasajeros[id_pasajero][5]}? (s/n): ")
     if sn.lower() == "s":
-        Pasajeros.pop(id_pasajero)
+        aux = get_lista_by_dato(id_pasajero, archivo_modulo)
+        delete_data(archivo_modulo, id_pasajero, aux)
         print("Pasajero eliminado exitosamente")
     
 

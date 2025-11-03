@@ -5,12 +5,27 @@ def fix_info(l):
     list[-1] = list[-1].strip("\n")
     return list
 
-def get_info_by_id(id, archivo):
+def get_max_id(archivo):
+    try:
+        count = 0
+        arch = open(archivo, "r", encoding="UTF-8")
+        for linea in arch:
+            count += 1
+        return count + 1
+    except OSError:
+        print("No se pudo leer el archivo")
+    finally:
+        try:
+            arch.close()
+        except:
+            print("No se pudo cerrar el archivo") 
+
+def get_lista_by_dato(dato, archivo):
     try:
         arch = open(archivo, "r", encoding="UTF-8")
         for linea in arch:
             lista = fix_info(linea)
-            if str(id) == lista[0]:
+            if str(dato) in lista:
                 return lista      
     except OSError:
         print("No se pudo leer el archivo")
@@ -26,7 +41,8 @@ def print_info(archivo):
         for linea in arch:
             lista = fix_info(linea)
             for x in lista:
-                print(f"{x:>10}")   
+                print(f"║{x:^20}", end="")
+            print()
     except OSError:
         print("No se pudo leer el archivo")
     finally:

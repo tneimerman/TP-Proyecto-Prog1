@@ -1,15 +1,15 @@
 from data import referenciaVuelos, Vuelos, Destinos, Aerolinea, referenciaDestinos,referenciaAerolinea
 from CRUDs.Destinos import mostrar_destinos 
 from Helpers import validar_fecha
-from CRUDs.Archivos import get_info_by_id, fix_info
+from CRUDs.Archivos import *
 archivo_modulo = "Archivos/Vuelos.txt"
 def get_vuelos(archivo):
     try:
         arch = open(archivo, "r", encoding="UTF-8")
         for linea in arch:
             lista = fix_info(linea)
-            aero = get_info_by_id(lista[1], "Archivos/Aerolinea.txt")
-            dest = get_info_by_id(lista[2], "Archivos/Destinos.txt")
+            aero = get_lista_by_dato(lista[1], "Archivos/Aerolinea.txt")
+            dest = get_lista_by_dato(lista[2], "Archivos/Destinos.txt")
             lista[1] = aero[1]
             lista[2] = dest[1]
             for x in lista:
@@ -22,6 +22,9 @@ def get_vuelos(archivo):
             arch.close()
         except:
             print("No se pudo cerrar el archivo")
+def get_vuelo_by_referencia(pos, ref):
+    try:
+        
 def get_fecha():
     while True:
         try:
@@ -31,22 +34,23 @@ def get_fecha():
         except ValueError:
             print("Fecha invalida, intente denuevo")
             continue
-def get_new_id_vuelo():
-    return len(Vuelos) + 1
+def print_lista(lista):
+    if len(lista) > 0:
+        print(f"║{lista[0]:^20}", end="")
+        print_lista(lista[1:])
 def get_destinos():
+    
     print("--- Seleccione un destino ---")
-    print(f"{referenciaDestinos[0]:<5} {referenciaDestinos[1]:<20}")
-    for i in Destinos:
-        print(f"{i[0]:<5} {i[1]:<20}")
+    print(f"{print_lista(referenciaDestinos)}")
+    print_info("Archivos/Destinos.txt")
     op = int(input("Seleccion: "))
-    return Destinos[op-1][0]
+    return op
 def get_aerolineas():
     print("--- Seleccione una aerolinea ---")
-    print(f"{referenciaAerolinea[0]:<5} {referenciaAerolinea[1]:<20}")
-    for i in Aerolinea:
-        print(f"{i[0]:<5} {i[1]:<20}")
+    print(f"{print_lista(referenciaAerolinea)}")
+    print_info("Archivos/Aerolinea.txt")
     op = int(input("Seleccion: "))
-    return Aerolinea[op-1][0]
+    return op
 def get_ref_vuelo(pos, ref):
     vuelo = []
     for x in Vuelos:
@@ -77,7 +81,7 @@ def show_results(data):
 def registrar_vuelo():
     print("\n--- Registro de Vuelo ---")
     nuevo = []
-    nuevo_id = get_new_id_vuelo()
+    nuevo_id = get_max_id(archivo_modulo)
     nuevo.append(nuevo_id)
 
     aero = get_aerolineas()
@@ -96,14 +100,15 @@ def registrar_vuelo():
     escala = input("Ingrese escala (Directo o con escala): ")
     nuevo.append(escala)
 
-    Vuelos.append(nuevo)
+    save_data(archivo_modulo, nuevo)
     print("Vuelo registrado con ID:", nuevo_id)
     return nuevo_id
 
 # READ
+
 def mostrar_vuelos():
     print("\n--- Lista de Vuelos ---")
-    print(f"||{"ID":<20}|| ||{"Empresa":<20}|| ||{"Destino":<20}|| ||{"Fecha":<20}|| ||{"Escala":<20}||")
+    print(f"||{print_lista(referenciaVuelos)}||")
     print("="*124)
     get_vuelos(archivo_modulo)
 
