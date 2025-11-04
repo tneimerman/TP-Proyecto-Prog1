@@ -133,25 +133,24 @@ def borrar_data(archivo, id, list):
 def modificar_lista(archivo, new_dato, pos_dato, id):
     temp = "temp.txt"
     encontrado = False
+    anterior = None
     lista_aux = []
     try:
         arch = open(archivo, "rt", encoding="UTF-8")
         aux = open(temp, "wt", encoding="UTF-8")
         for linea in arch:
             datos = fix_info(linea)
-            if id == datos[0]:
+            if str(id) == datos[0]:
+                anterior = datos[int(pos_dato)]
                 lista_aux = datos
-                lista_aux[pos_dato] = new_dato
+                lista_aux[int(pos_dato)] = new_dato
                 linea_fixed = ';'.join(str(x) for x in lista_aux) + '\n'
                 aux.write(linea_fixed)
                 encontrado = True
-                print(f"Dato anterior: {datos[pos_dato]} \nDato nuevo: {new_dato}")
+                
             else:
                 linea_fixed = ';'.join(str(x) for x in datos) + '\n'
-                aux.write(linea_fixed)
-        
-
-            
+                aux.write(linea_fixed) 
     except FileNotFoundError:
         print("El archivo no existe.")
     except OSError as error:
@@ -160,6 +159,7 @@ def modificar_lista(archivo, new_dato, pos_dato, id):
         try:
             arch.close()
             aux.close()
+            print(f"Dato modificado de '{anterior}' a '{new_dato}' correctamente.")
         except:
             print("Error en el cierre del archivo:")
 

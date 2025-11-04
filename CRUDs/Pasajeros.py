@@ -21,7 +21,7 @@ def funcionActualizar(op,idp):
         case "1":
             print("Inserte la nueva contraseña:")
             nuevaContra = input()
-            pasajero[op] = nuevaContra
+            modificar_lista(archivo_modulo, nuevaContra, op, idp)
             return True
         case "2":
             while True:
@@ -29,7 +29,7 @@ def funcionActualizar(op,idp):
                     print("Inserte el nuevo mail:")
                     nuevoMail = input()
                     valid_mail = validar_mail(nuevoMail)
-                    pasajero[op] = nuevoMail
+                    modificar_lista(archivo_modulo, nuevoMail, op, idp)
                     break
                 except ValueError:
                     print("Mail invalido, intente devuelta")
@@ -40,7 +40,7 @@ def funcionActualizar(op,idp):
                     print("Inserte el nuevo DNI:")
                     nuevoDNI = input()
                     valid_DNI = validar_dni(nuevoDNI)
-                    pasajero[op] = nuevoDNI
+                    modificar_lista(archivo_modulo, nuevoDNI, op, idp)
                     break
                 except ValueError:
                     print("DNI invalido, intente denuevo")
@@ -48,12 +48,12 @@ def funcionActualizar(op,idp):
         case "4":
             print("Inserte el nuevo nombre:")
             nuevoNombre = input()
-            pasajero[op] = nuevoNombre
+            modificar_lista(archivo_modulo, nuevoNombre, op, idp)
             return True
         case "5":
             print("Inserte el nuevo apellido:")
             nuevoApellido = input()
-            pasajero[op] = nuevoApellido
+            modificar_lista(archivo_modulo, nuevoApellido, op, idp)
             return True
         case "6":
             while True:
@@ -61,7 +61,7 @@ def funcionActualizar(op,idp):
                     print("Inserte el nuevo telefono:")
                     nuevoTelefono = input()
                     valid_tel  = validar_telefono(nuevoTelefono)
-                    pasajero[op] = nuevoTelefono
+                    modificar_lista(archivo_modulo, nuevoTelefono, op, idp)
                     break
                 except ValueError:
                     print("Telefono invalido, intente denuevo")
@@ -73,7 +73,7 @@ def funcionActualizar(op,idp):
                     print("Inserte la nueva fecha de nacimiento:")
                     nuevaFecha = input()
                     valid_fecha = validar_fecha(nuevaFecha)
-                    pasajero[op] = nuevaFecha
+                    modificar_lista(archivo_modulo, nuevaFecha, op, idp)
                     break
                 except ValueError:
                     print("Fecha invalida, intente denuevo")
@@ -261,6 +261,7 @@ def menu_pasajeros(id_pasajero=0):
             case "2":
 
                 pasajero = login()
+                id_pasajero = pasajero[0]
             case "3":
                 try:
                     if id_pasajero != 0:

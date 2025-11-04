@@ -1,8 +1,9 @@
 from data import referenciaVueloPasajero, VueloPasajero, vuelo_pasajero
-from data import referenciaPasajeros, Pasajeros
-from data import referenciaVuelos, Vuelos
-from data import referenciaDestinos, Destinos
-from data import referenciaAerolinea, Aerolinea
+from data import referenciaPasajeros
+from data import referenciaVuelos
+from data import referenciaDestinos
+from data import referenciaAerolinea
+from CRUDs.Archivos import *
 import re
 from functools import reduce
 
@@ -11,29 +12,34 @@ def obtener_nuevo_id():
 
 # Validaciones de IDs en las matrices
 def validar_id_pasajero(id_pasajero):
-    ids_pasajeros = list(map(lambda x: x[0], Pasajeros))
+    matriz = obtener_matriz("Archivos/Pasajeros.txt")
+    ids_pasajeros = list(map(lambda x: int(x[0]), matriz))
     return id_pasajero in ids_pasajeros
 
 def validar_id_vuelo(id_vuelo):
-    ids_vuelos = list(map(lambda x: x[0], Vuelos))
+    matriz = obtener_matriz("Archivos/Pasajeros.txt")
+    ids_vuelos = list(map(lambda x: int(x[0]), matriz))
     return id_vuelo in ids_vuelos
 
 def obtener_nombre_pasajero(id_pasajero):
-    pasajero = list(filter(lambda x: x[0] == id_pasajero, Pasajeros))
+    matriz = obtener_matriz("Archivos/Pasajeros.txt")
+    pasajero = list(filter(lambda x: int(x[0]) == id_pasajero, matriz))
     if pasajero:
         return f"{pasajero[0][4]} {pasajero[0][5]}"  # Nombre + Apellido
     return "Desconocido"
 
 def obtener_info_vuelo(id_vuelo):
     """Obtiene información del vuelo por ID"""
-    vuelo = list(filter(lambda x: x[0] == id_vuelo, Vuelos))
+    matriz = obtener_matriz("Archivos/Vuelos.txt")
+    vuelo = list(filter(lambda x: int(x[0]) == id_vuelo, matriz))
     if vuelo:
-        empresa = vuelo[0][1]
-        id_destino = vuelo[0][2]
+        empresa = int(vuelo[0][1])
+        id_destino = int(vuelo[0][2])
         fecha = vuelo[0][3]
         
         # Obtener destino
-        destino = list(filter(lambda x: x[0] == id_destino, Destinos))
+        matriz = obtener_matriz("Archivos/Destinos.txt")
+        destino = list(filter(lambda x: int(x[0]) == id_destino, matriz))
         nombre_destino = destino[0][1] if destino else "Desconocido"
         
         return f"{empresa} - {nombre_destino} ({fecha})"
@@ -47,7 +53,8 @@ def crear_relacion_vuelo_pasajero():
     
     # Mostrar pasajeros disponibles
     print("\nPasajeros disponibles:")
-    for pasajero in Pasajeros:
+    pasaj = obtener_matriz("Archivos/Pasajeros.txt")
+    for pasajero in pasaj:
         print(f"ID: {pasajero[0]} - {pasajero[4]} {pasajero[5]} ({pasajero[2]})")
     
     try:
@@ -61,8 +68,12 @@ def crear_relacion_vuelo_pasajero():
     
     # Mostrar vuelos disponibles
     print("\nVuelos disponibles:")
-    for vuelo in Vuelos:
-        destino = list(filter(lambda x: x[0] == vuelo[2], Destinos))
+    vuel = obtener_matriz("Archivos/Vuelos.txt")
+    dest = obtener_matriz("Archivos/Destinos.txt")
+    for vuelo in vuel:
+        print(dest)
+        print(vuelo)
+        destino = list(filter(lambda x: int(x[0]) == int(vuelo[2]), dest))
         nombre_destino = destino[0][1] if destino else "Desconocido"
         print(f"ID: {vuelo[0]} - {vuelo[1]} a {nombre_destino} ({vuelo[3]})")
     
@@ -202,7 +213,8 @@ def actualizar_relacion():
     
     if opcion in [1, 3]:
         print("\nPasajeros disponibles:")
-        for pasajero in Pasajeros:
+        pasaj = obtener_matriz("Archivos/Pasajeros.txt")
+        for pasajero in pasaj:
             print(f"ID: {pasajero[0]} - {pasajero[4]} {pasajero[5]}")
         
         try:
@@ -216,8 +228,10 @@ def actualizar_relacion():
     
     if opcion in [2, 3]:
         print("\nVuelos disponibles:")
-        for vuelo in Vuelos:
-            destino = list(filter(lambda x: x[0] == vuelo[2], Destinos))
+        vuel = obtener_matriz("Archivos/Vuelos.txt")
+        dest = obtener_matriz("Archivos/Destinos.txt")
+        for vuelo in vuel:
+            destino = list(filter(lambda x: x[0] == vuelo[2], dest))
             nombre_destino = destino[0][1] if destino else "Desconocido"
             print(f"ID: {vuelo[0]} - {vuelo[1]} a {nombre_destino}")
         
@@ -294,7 +308,9 @@ def eliminar_relacion():
 
 def generar_estadisticas():
     print("\n=== ESTADÍSTICAS DEL SISTEMA ===")
-    
+    dest = obtener_matriz("Archivos/Destinos.txt")
+    vuel = obtener_matriz("Archivos/Vuelos.txt")
+    pasaj = obtener_matriz("Archivos/Pasajeros.txt")
     if not VueloPasajero:
         print("No hay datos para generar estadísticas")
         return
@@ -337,7 +353,8 @@ def generar_estadisticas():
     
     if opcion in [3, 5]:
         # Destinos más populares
-        vuelos_con_destino = list(map(lambda vp: next(filter(lambda v: v[0] == vp[2], Vuelos), None), VueloPasajero))
+        
+        vuelos_con_destino = list(map(lambda vp: next(filter(lambda v: int(v[0]) == vp[2], vuel), None), VueloPasajero))
         vuelos_validos = list(filter(lambda x: x is not None, vuelos_con_destino))
         
         if vuelos_validos:
@@ -349,13 +366,15 @@ def generar_estadisticas():
             
             print(f"\nDestinos más populares:")
             for destino_id, cantidad in conteos_destinos:
-                destino = list(filter(lambda x: x[0] == destino_id, Destinos))
+                
+                destino = list(filter(lambda x: x[0] == destino_id, dest))
                 nombre_destino = destino[0][1] if destino else "Desconocido"
                 print(f"   {nombre_destino}: {cantidad} reservas")
     
     if opcion in [4, 5]:
         # Estadísticas por empresa
-        vuelos_con_empresa = list(map(lambda vp: next(filter(lambda v: v[0] == vp[2], Vuelos), None), VueloPasajero))
+        
+        vuelos_con_empresa = list(map(lambda vp: next(filter(lambda v: int(v[0]) == vp[2], vuel), None), VueloPasajero))
         vuelos_validos = list(filter(lambda x: x is not None, vuelos_con_empresa))
         
         if vuelos_validos:

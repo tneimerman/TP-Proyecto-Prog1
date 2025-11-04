@@ -4,17 +4,18 @@ from Helpers import validar_fecha
 from CRUDs.Archivos import *
 archivo_modulo = "Archivos/Vuelos.txt"
 #
-def get_vuelos(dest,aero):
+def get_vuelos():
+    aero = obtener_matriz("Archivos/Aerolinea.txt")
+    dest = obtener_matriz("Archivos/Destinos.txt")
+
     try:
         arch = open(archivo_modulo, "r", encoding="UTF-8")
         for linea in arch:
             lista = fix_info(linea)
-            for d in dest:
-                if lista[1] == d[0]:
-                    lista[1] == d[1]
-            for a in aero:
-                if lista[2] == a[0]:
-                    lista[2] == a[1]
+            d = list(filter(lambda x: x[0] == lista[1], dest))
+            a = list(filter(lambda x: x[0] == lista[2], aero))
+            lista[1] = a[0][1]
+            lista[2] = d[0][1]
             for x in lista:
                 print(f"║{x:^20}", end="")
             print()
@@ -106,12 +107,11 @@ def registrar_vuelo():
 # READ
 
 def mostrar_vuelos():
-    aero = obtener_matriz("Archivos/Aerolinea.txt")
-    dest = obtener_matriz("Archivos/Destinos.txt")
+    
     print("\n--- Lista de Vuelos ---")
     print(f"║{print_lista(referenciaVuelos)}║")
     print("="*110)
-    print(f"{get_vuelos(dest,aero)}")
+    print(f"{get_vuelos()}")
 
 
 
@@ -140,24 +140,21 @@ def actualizar_vuelo():
     mostrar_vuelos()
     try:
         vid = int(input("Ingrese ID del vuelo a actualizar: "))
-        for v in Vuelos:
-            if vid == v[0]:
-                vuelo = v
-                break
+
         op = input(f"Elija una opción: \n1. Cambiar aerolinea \n2. Cambiar destino \n3. Cambiar fecha de llegada \n4. Cambiar escala \n")
         match op:
             case "1":
                 aero = get_aerolineas()
-                Vuelos[vuelo[0]][1] = aero
+                modificar_lista(archivo_modulo, aero, op, vid)
             case "2":
                 dest = get_destinos()
-                Vuelos[vuelo[0]][2] = dest
+                modificar_lista(archivo_modulo, dest, op, vid)
             case "3":
                 fecha = get_fecha()
-                Vuelos[vuelo[0]][3] = fecha
+                modificar_lista(archivo_modulo, fecha, op, vid)
             case "4":
                 escala = input("Ingrese escala (Directo o con escala): ")
-                Vuelos[vuelo[0]][4] = escala
+                modificar_lista(archivo_modulo, escala, op, vid)
     
     except ValueError:
         print("ID inválido.")
