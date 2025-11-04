@@ -29,3 +29,44 @@ def obtener_diccionario_por_id(id):
             arch.close()
         except:
             print("No se pudo cerrar el archivo")
+def guardar_diccionario(dic):
+    try:
+        with open(archivo_modulo, "r", encoding="UTF-8") as arch:
+            dict = json.load(arch)
+        dict.append(dic)
+        with open(archivo_modulo, "w", encoding="UTF-8") as arch:
+            json.dump(dict, arch, ensure_ascii=False)
+    except (FileNotFoundError,OSError) as error:
+        print(f"Error {error}")
+def eliminar_diccionario(id):
+    try:
+        with open(archivo_modulo, "r", encoding="UTF-8") as arch:
+            dict = json.load(arch)
+        ids = [dic["ID"] for dic in dict]
+        if id in ids:
+            indice = ids.index(id)
+            dict.pop(indice)
+            with open(archivo_modulo, "w", encoding="UTF-8") as arch:
+                dict = json.dump(dict, arch, ensure_ascii=False)           
+            print(f"No se encontro la referencia con el id: {id}")
+        
+        
+    except (FileNotFoundError,OSError) as error:
+        print(f"Error {error}")
+def modificar_diccionario(dato_nuevo, pos, id):
+    try:
+        with open(archivo_modulo, "r", encoding="UTF-8") as arch:
+            dict = json.load(arch)
+        ids = [dic["ID"] for dic in dict]
+        if id in ids:
+            indice = ids.index(id)
+            dict[indice][f"{pos}"] = dato_nuevo
+            with open(archivo_modulo, "w", encoding="UTF-8") as arch:
+                dict = json.dump(dict, arch, ensure_ascii=False)
+            
+            print(f"No se encontro la referencia con el id: {id}")
+        
+        
+    except (FileNotFoundError,OSError) as error:
+        print(f"Error {error}")
+    

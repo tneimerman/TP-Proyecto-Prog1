@@ -2,7 +2,7 @@ import CRUDs
 
 if __name__ == "__main__":
     op = 0
-    idp = 1
+    idp = 0
     bandera = True
     print("="*50)
     print("\033[1m Bienvenido al Sistema de Gestión de Vuelos\033[0m")

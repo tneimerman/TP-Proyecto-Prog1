@@ -1,13 +1,16 @@
-from data import referenciaVueloPasajero, VueloPasajero, vuelo_pasajero
+from data import referenciaVueloPasajero, vuelo_pasajero
 from data import referenciaPasajeros
 from data import referenciaVuelos
 from data import referenciaDestinos
 from data import referenciaAerolinea
+from CRUDs.Vuelos import get_vuelos
 from CRUDs.Archivos import *
+from CRUDs.JSON import *
 import re
 from functools import reduce
 
 def obtener_nuevo_id():
+    VueloPasajero = obtener_diccionarios()
     return len(VueloPasajero) + 1
 
 # Validaciones de IDs en las matrices
@@ -23,7 +26,7 @@ def validar_id_vuelo(id_vuelo):
 
 def obtener_nombre_pasajero(id_pasajero):
     matriz = obtener_matriz("Archivos/Pasajeros.txt")
-    pasajero = list(filter(lambda x: int(x[0]) == id_pasajero, matriz))
+    pasajero = list(filter(lambda x: int(x[0]) == int(id_pasajero), matriz))
     if pasajero:
         return f"{pasajero[0][4]} {pasajero[0][5]}"  # Nombre + Apellido
     return "Desconocido"
@@ -46,7 +49,18 @@ def obtener_info_vuelo(id_vuelo):
     return "Vuelo desconocido"
 
 # CRUD - INSERTAR NUEVA RELACION VUELO-PASAJERO
+def verificar_relacion_existente(valor, pos, VueloPasajero):
+    while True:
+        try:
+            for v in VueloPasajero:
+                if v[pos] != valor:
+                    print("No existe")
+                    break
 
+        except ValueError:
+            print("Error: Ya existe una relación con estos datos")
+            continue
+        
 def crear_relacion_vuelo_pasajero():
     """Crea una nueva relación vuelo-pasajero"""
     print("\n=== CREAR NUEVA RELACIÓN VUELO-PASAJERO ===")
@@ -87,6 +101,7 @@ def crear_relacion_vuelo_pasajero():
         return
     
     # Verificar si la relación ya existe
+    VueloPasajero = obtener_diccionarios()
     relacion_existente = list(filter(lambda x: x[1] == id_pasajero and x[2] == id_vuelo, VueloPasajero))
     if relacion_existente:
         print("Error: Esta relación ya existe")
@@ -95,10 +110,7 @@ def crear_relacion_vuelo_pasajero():
     # Crear nueva relación
     nuevo_id = obtener_nuevo_id()
     nueva_relacion = [nuevo_id, id_pasajero, id_vuelo]
-    VueloPasajero.append(nueva_relacion)
-    
-    # Actualizar diccionario
-    vuelo_pasajero.append(dict(zip(referenciaVueloPasajero, nueva_relacion)))
+    guardar_diccionario(nueva_relacion)
     
     print(f"Relación creada exitosamente:")
     print(f"Pasajero: {obtener_nombre_pasajero(id_pasajero)}")
@@ -113,6 +125,7 @@ def buscar_relaciones():
     print("3. Buscar por ID de vuelo")
     print("4. Mostrar todas las relaciones")
     
+    VueloPasajero = obtener_diccionarios()
     try:
         opcion = int(input("\nSeleccione una opción: "))
     except ValueError:
@@ -163,7 +176,7 @@ def buscar_relaciones():
 def actualizar_relacion():
     """Actualiza una relación vuelo-pasajero existente"""
     print("\n=== ACTUALIZAR RELACIÓN VUELO-PASAJERO ===")
-    
+    VueloPasajero = obtener_diccionarios()
     if not VueloPasajero:
         print("No hay relaciones para actualizar")
         return
@@ -171,9 +184,9 @@ def actualizar_relacion():
     # Mostrar relaciones existentes
     print("\nRelaciones existentes:")
     for relacion in VueloPasajero:
-        nombre_pasajero = obtener_nombre_pasajero(relacion[1])
-        info_vuelo = obtener_info_vuelo(relacion[2])
-        print(f"ID: {relacion[0]} | Pasajero: {nombre_pasajero} | Vuelo: {info_vuelo}")
+        nombre_pasajero = obtener_nombre_pasajero(relacion['IdPasajero'])
+        info_vuelo = obtener_info_vuelo(relacion['IdVuelo'])
+        print(f"ID: {relacion["ID"]} | Pasajero: {nombre_pasajero} | Vuelo: {info_vuelo}")
     
     try:
         id_relacion = int(input("\nIngrese ID de la relación a actualizar: "))
@@ -184,7 +197,7 @@ def actualizar_relacion():
     # Buscar la relación
     indice = -1
     for i, relacion in enumerate(VueloPasajero):
-        if relacion[0] == id_relacion:
+        if relacion["ID"] == id_relacion:
             indice = i
             break
     
@@ -194,28 +207,25 @@ def actualizar_relacion():
     
     relacion_actual = VueloPasajero[indice]
     print(f"\nRelación actual:")
-    print(f"Pasajero: {obtener_nombre_pasajero(relacion_actual[1])}")
-    print(f"Vuelo: {obtener_info_vuelo(relacion_actual[2])}")
+    print(f"Pasajero: {obtener_nombre_pasajero(relacion_actual["IdPasajero"])}")
+    print(f"Vuelo: {obtener_info_vuelo(relacion_actual["IdVuelo"])}")
     
     print("\n¿Qué desea actualizar?")
     print("1. ID del pasajero")
     print("2. ID del vuelo")
-    print("3. Ambos")
-    
+
     try:
         opcion = int(input("Seleccione una opción: "))
     except ValueError:
         print("Error: Debe ingresar un número válido")
         return
     
-    nuevo_id_pasajero = relacion_actual[1]
-    nuevo_id_vuelo = relacion_actual[2]
+    nuevo_id_pasajero = relacion_actual["IdPasajero"]
+    nuevo_id_vuelo = relacion_actual["IdVuelo"]
     
-    if opcion in [1, 3]:
+    if opcion == 1:
         print("\nPasajeros disponibles:")
-        pasaj = obtener_matriz("Archivos/Pasajeros.txt")
-        for pasajero in pasaj:
-            print(f"ID: {pasajero[0]} - {pasajero[4]} {pasajero[5]}")
+        print(mostrar_informacion("Archivos/Pasajeros.txt"))
         
         try:
             nuevo_id_pasajero = int(input("Nuevo ID del pasajero: "))
@@ -225,15 +235,11 @@ def actualizar_relacion():
         except ValueError:
             print("Error: Debe ingresar un número válido")
             return
-    
-    if opcion in [2, 3]:
+
+        modificar_diccionario(nuevo_id_pasajero,"IdPasajero",relacion_actual["ID"])
+    if opcion == 2:
         print("\nVuelos disponibles:")
-        vuel = obtener_matriz("Archivos/Vuelos.txt")
-        dest = obtener_matriz("Archivos/Destinos.txt")
-        for vuelo in vuel:
-            destino = list(filter(lambda x: x[0] == vuelo[2], dest))
-            nombre_destino = destino[0][1] if destino else "Desconocido"
-            print(f"ID: {vuelo[0]} - {vuelo[1]} a {nombre_destino}")
+        print(get_vuelos())
         
         try:
             nuevo_id_vuelo = int(input("Nuevo ID del vuelo: "))
@@ -243,15 +249,13 @@ def actualizar_relacion():
         except ValueError:
             print("Error: Debe ingresar un número válido")
             return
-    
+        
+        modificar_diccionario(nuevo_id_vuelo,"IdVuelo",relacion_actual["ID"])
     # Verificar si la nueva relación ya existe (excluyendo la actual)
-    relacion_existente = list(filter(lambda x: x[1] == nuevo_id_pasajero and x[2] == nuevo_id_vuelo and x[0] != id_relacion, VueloPasajero))
-    if relacion_existente:
-        print("Error: Ya existe una relación con estos datos")
-        return
+    
     
     # Actualizar la relación
-    VueloPasajero[indice] = [id_relacion, nuevo_id_pasajero, nuevo_id_vuelo]
+    
     
     # Actualizar diccionario
     for i, item in enumerate(vuelo_pasajero):
@@ -268,7 +272,7 @@ def actualizar_relacion():
 def eliminar_relacion():
     """Elimina una relación vuelo-pasajero"""
     print("\n=== ELIMINAR RELACIÓN VUELO-PASAJERO ===")
-    
+    VueloPasajero = obtener_diccionarios()
     if not VueloPasajero:
         print("No hay relaciones para eliminar")
         return
@@ -276,9 +280,9 @@ def eliminar_relacion():
     # Mostrar relaciones existentes
     print("\nRelaciones existentes:")
     for relacion in VueloPasajero:
-        nombre_pasajero = obtener_nombre_pasajero(relacion[1])
-        info_vuelo = obtener_info_vuelo(relacion[2])
-        print(f"ID: {relacion[0]} | Pasajero: {nombre_pasajero} | Vuelo: {info_vuelo}")
+        nombre_pasajero = obtener_nombre_pasajero(relacion["IdPasajero"])
+        info_vuelo = obtener_info_vuelo(relacion["IdVuelo"])
+        print(f"ID: {relacion["ID"]} | Pasajero: {nombre_pasajero} | Vuelo: {info_vuelo}")
     
     try:
         id_relacion = int(input("\nIngrese ID de la relación a eliminar: "))
@@ -289,16 +293,15 @@ def eliminar_relacion():
     # Buscar y eliminar la relación
     relacion_encontrada = None
     for i, relacion in enumerate(VueloPasajero):
-        if relacion[0] == id_relacion:
-            relacion_encontrada = VueloPasajero.pop(i)
+        if relacion["ID"] == id_relacion:
+            eliminar_diccionario(id_relacion)
             break
     
     if relacion_encontrada is None:
         print("Error: Relación no encontrada")
         return
     
-    # Eliminar del diccionario
-    vuelo_pasajero[:] = [item for item in vuelo_pasajero if item['ID'] != id_relacion]
+    
     
     print("Relación eliminada exitosamente:")
     print(f"Pasajero: {obtener_nombre_pasajero(relacion_encontrada[1])}")
@@ -311,6 +314,7 @@ def generar_estadisticas():
     dest = obtener_matriz("Archivos/Destinos.txt")
     vuel = obtener_matriz("Archivos/Vuelos.txt")
     pasaj = obtener_matriz("Archivos/Pasajeros.txt")
+    VueloPasajero = obtener_matriz()
     if not VueloPasajero:
         print("No hay datos para generar estadísticas")
         return
