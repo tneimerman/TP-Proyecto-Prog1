@@ -4,7 +4,7 @@ def fix_info(l):
     list = l.split(";")
     list[-1] = list[-1].strip("\n")
     return list
-def get_matriz(archivo):
+def obtener_matriz(archivo):
     lista = []
     try:
         arch = open(archivo, "r", encoding="UTF-8")
@@ -19,7 +19,7 @@ def get_matriz(archivo):
             arch.close()
         except:
             print("No se pudo cerrar el archivo") 
-def get_max_id(archivo):
+def obtener_id_maximo(archivo):
     try:
         count = 0
         arch = open(archivo, "r", encoding="UTF-8")
@@ -34,7 +34,7 @@ def get_max_id(archivo):
         except:
             print("No se pudo cerrar el archivo") 
 
-def get_lista_by_dato(dato, archivo):
+def obtener_lista_por_dato(dato, archivo):
     try:
         arch = open(archivo, "r", encoding="UTF-8")
         for linea in arch:
@@ -48,7 +48,7 @@ def get_lista_by_dato(dato, archivo):
             arch.close()
         except:
             print("No se pudo cerrar el archivo")
-def get_lista_by_id(id, archivo):
+def obtener_lista_por_id(id, archivo):
     try:
         arch = open(archivo, "r", encoding="UTF-8")
         for linea in arch:
@@ -63,7 +63,7 @@ def get_lista_by_id(id, archivo):
         except:
             print("No se pudo cerrar el archivo")
 
-def print_info(archivo):
+def mostrar_informacion(archivo):
     try:
         arch = open(archivo, "r", encoding="UTF-8")
         for linea in arch:
@@ -79,7 +79,7 @@ def print_info(archivo):
         except:
             print("No se pudo cerrar el archivo")
 
-def save_data(matriz, archivo):
+def guardar_data(matriz, archivo):
     try:
         arch = open(archivo, "a", encoding="UTF-8")
         linea_fixed = ';'.join(str(x) for x in matriz) + '\n'
@@ -93,7 +93,7 @@ def save_data(matriz, archivo):
             arch.close()
         except NameError:
             pass
-def delete_data(archivo, id, list):
+def borrar_data(archivo, id, list):
     temp = "temp.txt"
     encontrado = False
 
@@ -130,3 +130,45 @@ def delete_data(archivo, id, list):
     else:
         os.remove(temp)  # eliminamos el temporal si no se usó
         print(f"No se encontró el id: {id}.")
+def modificar_lista(archivo, new_dato, pos_dato, id):
+    temp = "temp.txt"
+    encontrado = False
+    lista_aux = []
+    try:
+        arch = open(archivo, "rt", encoding="UTF-8")
+        aux = open(temp, "wt", encoding="UTF-8")
+        for linea in arch:
+            datos = fix_info(linea)
+            if id == datos[0]:
+                lista_aux = datos
+                lista_aux[pos_dato] = new_dato
+                linea_fixed = ';'.join(str(x) for x in lista_aux) + '\n'
+                aux.write(linea_fixed)
+                encontrado = True
+                print(f"Dato anterior: {datos[pos_dato]} \nDato nuevo: {new_dato}")
+            else:
+                linea_fixed = ';'.join(str(x) for x in datos) + '\n'
+                aux.write(linea_fixed)
+        
+
+            
+    except FileNotFoundError:
+        print("El archivo no existe.")
+    except OSError as error:
+        print("Error en el acceso al archivo:", error)
+    finally:
+        try:
+            arch.close()
+            aux.close()
+        except:
+            print("Error en el cierre del archivo:")
+
+    if encontrado:
+        try:
+            os.remove(archivo)
+            os.rename(temp, archivo)
+        except OSError as error:
+            print("Error al reemplazar el archivo:", error)
+    else:
+        os.remove(temp)
+        print(f"No se encontró el producto.")

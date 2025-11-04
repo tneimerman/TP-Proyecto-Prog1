@@ -15,7 +15,7 @@ def displayActualizar():
     return op
 def funcionActualizar(op,idp):
     idPasajero = idp - 1
-    pasajero = get_lista_by_dato(idPasajero, archivo_modulo)
+    pasajero = obtener_lista_por_dato(idPasajero, archivo_modulo)
     op = displayActualizar()
     match op:
         case "1":
@@ -90,7 +90,7 @@ def show_datos(lista):
         print(f"║{lista[0]:^20}║", end="")
         show_datos(lista[1:])
 def datos_pasajero(id_pasajero):
-    lista = get_lista_by_dato(id_pasajero, archivo_modulo)
+    lista = obtener_lista_por_dato(id_pasajero, archivo_modulo)
     print("="*(180))
     print(f"Datos del pasajero")
     print("="*(180))
@@ -103,7 +103,7 @@ def datos_pasajero(id_pasajero):
 def registro():
     print("\n--- Registro de pasajero ---")
     nuevo = []
-    nuevo_id = get_max_id(archivo_modulo)
+    nuevo_id = obtener_id_maximo(archivo_modulo)
     nuevo.append(nuevo_id)  # ID automático
 
     # Contraseña (mínimo: permitir cualquier string)
@@ -164,7 +164,7 @@ def registro():
             print("Fecha invalida, intente denuevo")
             continue
 
-    save_data(archivo_modulo, nuevo)
+    guardar_data(archivo_modulo, nuevo)
     print("Pasajero registrado con ID:", nuevo_id)
     return nuevo_id
 
@@ -185,14 +185,8 @@ def login():
         contr = input("Contraseña: ")
 
         # Buscar coincidencia exacta mail/contraseña
-        i = 0
-        while i < len(Pasajeros):
-            if Pasajeros[i][2] == mail and Pasajeros[i][1] == contr:
-                print(f"Bienvenido, {Pasajeros[i][4]} {Pasajeros[i][5]}")
-                return Pasajeros[i][0]
-            i += 1
-
-        print("Credenciales inválidas.")
+        
+        return  obtener_lista_por_dato(mail, archivo_modulo)
 
 
 
@@ -221,10 +215,10 @@ def eliminar(id_pasajero):
     print("="*50)
     print("\n--- Eliminar pasajero ---")
     print("="*50)
-    sn = input(f"Esta seguro de eliminar el pasajero {Pasajeros[id_pasajero][4]} {Pasajeros[id_pasajero][5]}? (s/n): ")
+    sn = input(f"Esta seguro de eliminar el pasajero? (s/n): ")
     if sn.lower() == "s":
-        aux = get_lista_by_dato(id_pasajero, archivo_modulo)
-        delete_data(archivo_modulo, id_pasajero, aux)
+        aux = obtener_lista_por_dato(id_pasajero, archivo_modulo)
+        borrar_data(archivo_modulo, id_pasajero, aux)
         print("Pasajero eliminado exitosamente")
     
 
@@ -254,7 +248,7 @@ def menu_pasajeros(id_pasajero=0):
 
         if id_pasajero != 0:
             try:
-                print(f"\nSesión iniciada: {Pasajeros[id_pasajero-1][4]} {Pasajeros[id_pasajero-1][5]} (ID {id_pasajero})")
+                print(f"\nSesión iniciada: {pasajero[4]} {pasajero[id_pasajero-1][5]} (ID {id_pasajero})")
             except Exception:
 
                 print(f"\nSesión iniciada con ID {id_pasajero} (registro no disponible)")
@@ -266,7 +260,7 @@ def menu_pasajeros(id_pasajero=0):
                 id_pasajero = registro()
             case "2":
 
-                id_pasajero = login()
+                pasajero = login()
             case "3":
                 try:
                     if id_pasajero != 0:

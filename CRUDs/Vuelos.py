@@ -57,20 +57,20 @@ def get_destinos():
     
     print("--- Seleccione un destino ---")
     print(f"{print_lista(referenciaDestinos)}")
-    print_info("Archivos/Destinos.txt")
+    mostrar_informacion("Archivos/Destinos.txt")
     op = int(input("Seleccion: "))
     return op
 def get_aerolineas():
     print("--- Seleccione una aerolinea ---")
     print(f"{print_lista(referenciaAerolinea)}")
-    print_info("Archivos/Aerolinea.txt")
+    mostrar_informacion("Archivos/Aerolinea.txt")
     op = int(input("Seleccion: "))
     return op
     
 def show_results(data):
     
-    aero = get_lista_by_dato(data[1], "Archivos/Aerolinea.txt")
-    dest = get_lista_by_dato(data[2], "Archivos/Destinos.txt")
+    aero = obtener_lista_por_dato(data[1], "Archivos/Aerolinea.txt")
+    dest = obtener_lista_por_dato(data[2], "Archivos/Destinos.txt")
     data[1] = aero[1]
     data[2] = dest[1]
     print(f"╔{"═"*20}╦{"═"*20}╦{"═"*20}╦{"═"*20}╦{"═"*20}╗")
@@ -84,7 +84,7 @@ def show_results(data):
 def registrar_vuelo():
     print("\n--- Registro de Vuelo ---")
     nuevo = []
-    nuevo_id = get_max_id(archivo_modulo)
+    nuevo_id = obtener_id_maximo(archivo_modulo)
     nuevo.append(nuevo_id)
 
     aero = get_aerolineas()
@@ -99,15 +99,15 @@ def registrar_vuelo():
     escala = input("Ingrese escala (Directo o con escala): ")
     nuevo.append(escala)
 
-    save_data(archivo_modulo, nuevo)
+    guardar_data(archivo_modulo, nuevo)
     print("Vuelo registrado con ID:", nuevo_id)
     return nuevo_id
 
 # READ
 
 def mostrar_vuelos():
-    aero = get_matriz("Archivos/Aerolinea.txt")
-    dest = get_matriz("Archivos/Destinos.txt")
+    aero = obtener_matriz("Archivos/Aerolinea.txt")
+    dest = obtener_matriz("Archivos/Destinos.txt")
     print("\n--- Lista de Vuelos ---")
     print(f"║{print_lista(referenciaVuelos)}║")
     print("="*110)
@@ -174,7 +174,7 @@ def eliminar_vuelo():
             print("¿Esta seguro que quiere borrarlo")
             op = str(input("s/n "))
             if op == "s":
-                delete_data(archivo_modulo,vid,lista)
+                borrar_data(archivo_modulo,vid,lista)
             elif op == "n":
                 print("Volviendo al menu...")
             else:

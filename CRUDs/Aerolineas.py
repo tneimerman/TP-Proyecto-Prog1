@@ -7,7 +7,7 @@ def registrar_aerolinea():
     """Registra una nueva aerolinea en el sistema"""
     print("\n--- Registro de Aerolinea ---")
     nueva_aerolinea = []
-    nuevo_id = get_max_id()
+    nuevo_id = obtener_id_maximo()
     nueva_aerolinea.append(nuevo_id)
     
     # Validar nombre de la Aerolinea
