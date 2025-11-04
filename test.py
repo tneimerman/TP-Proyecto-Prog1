@@ -6,11 +6,11 @@ from CRUDs.Vuelos import mostrar_vuelos, get_destinos
 
 archivo_modulo = "Archivos/Vuelos.txt"
 
-aero = ["5", "Air France", "Boeing 777"]
+vuelo = ["6", "2", "1", "2026/12/02", "Directo"]
 
-#save_data(aero, "Archivos/Aerolinea.txt")
-#delete_data("Archivos/Aerolinea.txt", 6)
+#save_data(vuelo, "Archivos/Vuelos.txt")
+lista = get_lista_by_id(6, "Archivos/Vuelos.txt")
+delete_data("Archivos/Vuelos.txt", 6, lista)
 #datos_pasajero(1)
-#mostrar_vuelos()
 
-id = get_destinos()
+

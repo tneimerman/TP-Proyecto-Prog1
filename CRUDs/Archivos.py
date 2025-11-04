@@ -4,7 +4,21 @@ def fix_info(l):
     list = l.split(";")
     list[-1] = list[-1].strip("\n")
     return list
-
+def get_matriz(archivo):
+    lista = []
+    try:
+        arch = open(archivo, "r", encoding="UTF-8")
+        for linea in arch:
+            lista_aux = fix_info(linea)
+            lista.append(lista_aux)
+        return lista
+    except OSError:
+        print("No se pudo leer el archivo")
+    finally:
+        try:
+            arch.close()
+        except:
+            print("No se pudo cerrar el archivo") 
 def get_max_id(archivo):
     try:
         count = 0
@@ -34,6 +48,20 @@ def get_lista_by_dato(dato, archivo):
             arch.close()
         except:
             print("No se pudo cerrar el archivo")
+def get_lista_by_id(id, archivo):
+    try:
+        arch = open(archivo, "r", encoding="UTF-8")
+        for linea in arch:
+            lista = fix_info(linea)
+            if str(id) == lista[0]:
+                return lista      
+    except OSError:
+        print("No se pudo leer el archivo")
+    finally:
+        try:
+            arch.close()
+        except:
+            print("No se pudo cerrar el archivo")
 
 def print_info(archivo):
     try:
@@ -41,7 +69,7 @@ def print_info(archivo):
         for linea in arch:
             lista = fix_info(linea)
             for x in lista:
-                print(f"║{x:^20}", end="")
+                print(f"║{x:^30}", end="")
             print()
     except OSError:
         print("No se pudo leer el archivo")
@@ -79,7 +107,6 @@ def delete_data(archivo, id, list):
             if codigo != str(id):
                 aux.write(linea)
             else:
-                aux.write(new_linea)
                 encontrado = True
 
     except FileNotFoundError:

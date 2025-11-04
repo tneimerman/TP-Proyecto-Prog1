@@ -3,17 +3,20 @@ from CRUDs.Destinos import mostrar_destinos
 from Helpers import validar_fecha
 from CRUDs.Archivos import *
 archivo_modulo = "Archivos/Vuelos.txt"
-def get_vuelos(archivo):
+#
+def get_vuelos(dest,aero):
     try:
-        arch = open(archivo, "r", encoding="UTF-8")
+        arch = open(archivo_modulo, "r", encoding="UTF-8")
         for linea in arch:
             lista = fix_info(linea)
-            aero = get_lista_by_dato(lista[1], "Archivos/Aerolinea.txt")
-            dest = get_lista_by_dato(lista[2], "Archivos/Destinos.txt")
-            lista[1] = aero[1]
-            lista[2] = dest[1]
+            for d in dest:
+                if lista[1] == d[0]:
+                    lista[1] == d[1]
+            for a in aero:
+                if lista[2] == a[0]:
+                    lista[2] == a[1]
             for x in lista:
-                print(f"||{x:<20}||", end = " ")
+                print(f"║{x:^20}", end="")
             print()
     except OSError:
         print("No se pudo leer el archivo")
@@ -24,6 +27,18 @@ def get_vuelos(archivo):
             print("No se pudo cerrar el archivo")
 def get_vuelo_by_referencia(pos, ref):
     try:
+        arch = open(archivo_modulo, "r", encoding="UTF-8")
+        for linea in arch:
+            x = fix_info(linea)
+            if str(ref) == x[pos]:
+                return x
+    except OSError:
+        print("No se pudo leer el archivo")
+    finally:
+        try:
+            arch.close()
+        except:
+            print("No se pudo cerrar el archivo")
         
 def get_fecha():
     while True:
@@ -51,30 +66,18 @@ def get_aerolineas():
     print_info("Archivos/Aerolinea.txt")
     op = int(input("Seleccion: "))
     return op
-def get_ref_vuelo(pos, ref):
-    vuelo = []
-    for x in Vuelos:
-        if x[pos] == ref:
-            vuelo.append(x)
-    return vuelo
     
 def show_results(data):
-
-    print(f"╔{"═"*10}╦{"═"*10}╦{"═"*15}╦{"═"*20}╗")
-    print(f"║{"Aerolinea":<10}║{"Destino":<10}║{referenciaVuelos[3]:<15}║{referenciaVuelos[4]:<20}║")
-    for x in data:
-        for aero in Aerolinea:
-            if aero[0] == x[1]:
-                x[1] = aero[1]
-            break
-        for dest in Destinos:
-            if dest[0] == x[2]:
-                x[2] = dest[1]
-                break
-   
-        print(f"╠{"═"*10}╬{"═"*10}╬{"═"*15}╬{"═"*20}╣")
-        print(f"║{x[1]:<10}║{x[2]:<10}║{x[3]:<15}║{x[4]:<20}║")
-    print(f"╚{"═"*10}╩{"═"*10}╩{"═"*15}╩{"═"*20}╝")
+    
+    aero = get_lista_by_dato(data[1], "Archivos/Aerolinea.txt")
+    dest = get_lista_by_dato(data[2], "Archivos/Destinos.txt")
+    data[1] = aero[1]
+    data[2] = dest[1]
+    print(f"╔{"═"*20}╦{"═"*20}╦{"═"*20}╦{"═"*20}╦{"═"*20}╗")
+    print(f"{print_lista(referenciaVuelos)}")
+    print(f"╠{"═"*20}╬{"═"*20}╬{"═"*20}╬{"═"*20}╬{"═"*20}╣")
+    print(f"{print_lista(data)}")
+    print(f"╚{"═"*20}╩{"═"*20}╩{"═"*20}╩{"═"*20}╩{"═"*20}╝")
 
     
 # CREATE
@@ -86,16 +89,12 @@ def registrar_vuelo():
 
     aero = get_aerolineas()
     nuevo.append(aero)
+
     dest = get_destinos()
     nuevo.append(dest)
-    while True:
-        try:
-            fecha = input("Ingrese fecha de llegada (AAAA-MM-DD): ")
-            nuevo.append(fecha)
-            break
-        except ValueError:
-            print("Fecha invalida, intente denuevo")
-            continue
+
+    fecha = get_fecha()
+    nuevo.append(fecha)
 
     escala = input("Ingrese escala (Directo o con escala): ")
     nuevo.append(escala)
@@ -107,10 +106,12 @@ def registrar_vuelo():
 # READ
 
 def mostrar_vuelos():
+    aero = get_matriz("Archivos/Aerolinea.txt")
+    dest = get_matriz("Archivos/Destinos.txt")
     print("\n--- Lista de Vuelos ---")
-    print(f"||{print_lista(referenciaVuelos)}||")
-    print("="*124)
-    get_vuelos(archivo_modulo)
+    print(f"║{print_lista(referenciaVuelos)}║")
+    print("="*110)
+    print(f"{get_vuelos(dest,aero)}")
 
 
 
@@ -121,10 +122,10 @@ def buscar_vuelo():
     match criterio:
         case 1:
             elec = get_aerolineas()
-            found = get_ref_vuelo(criterio,elec)
+            found = get_vuelo_by_referencia(criterio,elec)
         case 2: 
             elec = get_destinos()
-            found = get_ref_vuelo(criterio,elec)
+            found = get_vuelo_by_referencia(criterio,elec)
         case _:
             print("Opcion incorrecta")
     show_results(found)
@@ -164,17 +165,24 @@ def actualizar_vuelo():
 
 def eliminar_vuelo():
     mostrar_vuelos()
-    try:
-        vid = int(input("Ingrese ID del vuelo a eliminar: "))
-        for v in Vuelos:
-            if v[0] == vid:
-                Vuelos.remove(v)
-                print("Vuelo eliminado.")
-                return vid
-        print("No se encontró vuelo con ese ID.")
-    except ValueError:
-        print("ID inválido.")
-    return None
+    while True:
+        try:
+            vid = int(input("Ingrese ID del vuelo a eliminar: "))
+            lista = get_vuelo_by_referencia(0, vid)
+            print("Este es el vuelo que quiere borrar:")
+            print(lista)
+            print("¿Esta seguro que quiere borrarlo")
+            op = str(input("s/n "))
+            if op == "s":
+                delete_data(archivo_modulo,vid,lista)
+            elif op == "n":
+                print("Volviendo al menu...")
+            else:
+                print("Opcion invalida")
+
+        except ValueError:
+            print("ID inválido.")
+        return None
 
 
 def menu_vuelo():
