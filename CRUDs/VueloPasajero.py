@@ -1,11 +1,7 @@
-from data import referenciaVueloPasajero, vuelo_pasajero
-from data import referenciaPasajeros
-from data import referenciaVuelos
-from data import referenciaDestinos
-from data import referenciaAerolinea
+from referencias import referenciaVueloPasajero
 from CRUDs.Vuelos import get_vuelos
-from CRUDs.Archivos import *
-from CRUDs.JSON import *
+from Helpers.Archivos import *
+from Helpers.JSON import *
 import re
 from functools import reduce
 
@@ -85,8 +81,6 @@ def crear_relacion_vuelo_pasajero():
     vuel = obtener_matriz("Archivos/Vuelos.txt")
     dest = obtener_matriz("Archivos/Destinos.txt")
     for vuelo in vuel:
-        print(dest)
-        print(vuelo)
         destino = list(filter(lambda x: int(x[0]) == int(vuelo[2]), dest))
         nombre_destino = destino[0][1] if destino else "Desconocido"
         print(f"ID: {vuelo[0]} - {vuelo[1]} a {nombre_destino} ({vuelo[3]})")
@@ -102,14 +96,14 @@ def crear_relacion_vuelo_pasajero():
     
     # Verificar si la relación ya existe
     VueloPasajero = obtener_diccionarios()
-    relacion_existente = list(filter(lambda x: x[1] == id_pasajero and x[2] == id_vuelo, VueloPasajero))
+    relacion_existente = list(filter(lambda x: x["IdPasajero"] == id_pasajero and x["IdVuelo"] == id_vuelo, VueloPasajero))
     if relacion_existente:
         print("Error: Esta relación ya existe")
         return
     
     # Crear nueva relación
     nuevo_id = obtener_nuevo_id()
-    nueva_relacion = [nuevo_id, id_pasajero, id_vuelo]
+    nueva_relacion = {"ID": nuevo_id, "IdPasajero": id_pasajero,"IdVuelo": id_vuelo}
     guardar_diccionario(nueva_relacion)
     
     print(f"Relación creada exitosamente:")
@@ -135,14 +129,14 @@ def buscar_relaciones():
     if opcion == 1:
         try:
             id_relacion = int(input("Ingrese ID de la relación: "))
-            relaciones = list(filter(lambda x: x[0] == id_relacion, VueloPasajero))
+            relaciones = list(filter(lambda x: x["ID"] == id_relacion, VueloPasajero))
         except ValueError:
             print("Error: Debe ingresar un número válido")
             return
     elif opcion == 2:
         try:
             id_pasajero = int(input("Ingrese ID del pasajero: "))
-            relaciones = list(filter(lambda x: x[1] == id_pasajero, VueloPasajero))
+            relaciones = list(filter(lambda x: x["IdPasajero"] == id_pasajero, VueloPasajero))
         except ValueError:
             print("Error: Debe ingresar un número válido")
             return
@@ -166,9 +160,9 @@ def buscar_relaciones():
     print(f"\nSe encontraron {len(relaciones)} relación(es):")
     print("-" * 80)
     for relacion in relaciones:
-        nombre_pasajero = obtener_nombre_pasajero(relacion[1])
-        info_vuelo = obtener_info_vuelo(relacion[2])
-        print(f"ID: {relacion[0]} | Pasajero: {nombre_pasajero} | Vuelo: {info_vuelo}")
+        nombre_pasajero = obtener_nombre_pasajero(relacion["IdPasajero"])
+        info_vuelo = obtener_info_vuelo(relacion["IdVuelo"])
+        print(f"ID: {relacion["ID"]} | Pasajero: {nombre_pasajero} | Vuelo: {info_vuelo}")
 
 
 # CRUD - ACTUALIZAR RELACION VUELO-PASAJERO
@@ -251,18 +245,7 @@ def actualizar_relacion():
             return
         
         modificar_diccionario(nuevo_id_vuelo,"IdVuelo",relacion_actual["ID"])
-    # Verificar si la nueva relación ya existe (excluyendo la actual)
-    
-    
-    # Actualizar la relación
-    
-    
-    # Actualizar diccionario
-    for i, item in enumerate(vuelo_pasajero):
-        if item['ID'] == id_relacion:
-            vuelo_pasajero[i] = dict(zip(referenciaVueloPasajero, VueloPasajero[indice]))
-            break
-    
+
     print("✅ Relación actualizada exitosamente:")
     print(f"   Pasajero: {obtener_nombre_pasajero(nuevo_id_pasajero)}")
     print(f"   Vuelo: {obtener_info_vuelo(nuevo_id_vuelo)}")
@@ -304,7 +287,7 @@ def eliminar_relacion():
     
     
     print("Relación eliminada exitosamente:")
-    print(f"Pasajero: {obtener_nombre_pasajero(relacion_encontrada[1])}")
+    print(f"Pasajero: {obtener_nombre_pasajero(relacion_encontrada["IdPasajero"])}")
     print(f"Vuelo: {obtener_info_vuelo(relacion_encontrada[2])}")
 
 # FUNCIONES DE ESTADÍSTICAS Y REPORTES
@@ -314,7 +297,7 @@ def generar_estadisticas():
     dest = obtener_matriz("Archivos/Destinos.txt")
     vuel = obtener_matriz("Archivos/Vuelos.txt")
     pasaj = obtener_matriz("Archivos/Pasajeros.txt")
-    VueloPasajero = obtener_matriz()
+    VueloPasajero = obtener_diccionarios()
     if not VueloPasajero:
         print("No hay datos para generar estadísticas")
         return
@@ -333,22 +316,22 @@ def generar_estadisticas():
     
     if opcion in [1, 5]:
         # Pasajero con más vuelos
-        ids_pasajeros = list(map(lambda x: x[1], VueloPasajero))
+        ids_pasajeros = list(map(lambda x: x["IdPasajero"], VueloPasajero))
         pasajeros_unicos = list(set(ids_pasajeros))
         
-        conteos_pasajeros = list(map(lambda pid: (pid, len(list(filter(lambda x: x[1] == pid, VueloPasajero)))), pasajeros_unicos))
+        conteos_pasajeros = list(map(lambda pid: (pid, len(list(filter(lambda x: x["IdPasajero"] == pid, VueloPasajero)))), pasajeros_unicos))
         
         if conteos_pasajeros:
             pasajero_top = reduce(lambda a, b: a if a[1] > b[1] else b, conteos_pasajeros)
-            nombre_pasajero = obtener_nombre_pasajero(pasajero_top[0])
+            nombre_pasajero = obtener_nombre_pasajero(pasajero_top["IdPasajero"])
             print(f"\nPasajero con más vuelos: {nombre_pasajero} ({pasajero_top[1]} vuelos)")
     
     if opcion in [2, 5]:
         # Vuelo con más pasajeros
-        ids_vuelos = list(map(lambda x: x[2], VueloPasajero))
+        ids_vuelos = list(map(lambda x: x["IdVuelo"], VueloPasajero))
         vuelos_unicos = list(set(ids_vuelos))
         
-        conteos_vuelos = list(map(lambda vid: (vid, len(list(filter(lambda x: x[2] == vid, VueloPasajero)))), vuelos_unicos))
+        conteos_vuelos = list(map(lambda vid: (vid, len(list(filter(lambda x: x["IdVuelo"] == vid, VueloPasajero)))), vuelos_unicos))
         
         if conteos_vuelos:
             vuelo_top = reduce(lambda a, b: a if a[1] > b[1] else b, conteos_vuelos)
@@ -358,7 +341,7 @@ def generar_estadisticas():
     if opcion in [3, 5]:
         # Destinos más populares
         
-        vuelos_con_destino = list(map(lambda vp: next(filter(lambda v: int(v[0]) == vp[2], vuel), None), VueloPasajero))
+        vuelos_con_destino = list(map(lambda vp: next(filter(lambda v: int(v[0]) == vp["IdVuelo"], vuel), None), VueloPasajero))
         vuelos_validos = list(filter(lambda x: x is not None, vuelos_con_destino))
         
         if vuelos_validos:

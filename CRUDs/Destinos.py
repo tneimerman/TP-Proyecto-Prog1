@@ -1,5 +1,5 @@
-from data import referenciaDestinos, Destinos
-
+from referencias import referenciaDestinos, Destinos
+from Helpers.Archivos import *
 def getNewIdDestino():
     if len(Destinos) == 0:
         return 1

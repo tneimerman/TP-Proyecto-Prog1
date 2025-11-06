@@ -16,5 +16,5 @@ def validar_telefono(tel):
 
 def validar_fecha(fecha):
     if re.search(r"\d{4}/\d{2}/\d{2}", fecha) is None:
-        raise ValueError("Fecha invalida")
+        raise ValueError("Fecha invalida, formato valido 11(8 numeros)")
     return True

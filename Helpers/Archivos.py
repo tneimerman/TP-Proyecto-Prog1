@@ -69,7 +69,7 @@ def mostrar_informacion(archivo):
         for linea in arch:
             lista = fix_info(linea)
             for x in lista:
-                print(f"║{x:^30}", end="")
+                print(f"║{x:^15}", end="")
             print()
     except OSError:
         print("No se pudo leer el archivo")
@@ -79,10 +79,10 @@ def mostrar_informacion(archivo):
         except:
             print("No se pudo cerrar el archivo")
 
-def guardar_data(matriz, archivo):
+def guardar_data(archivo, matriz):
     try:
-        arch = open(archivo, "a", encoding="UTF-8")
         linea_fixed = ';'.join(str(x) for x in matriz) + '\n'
+        arch = open(archivo, "a", encoding="UTF-8")
         arch.write(linea_fixed) 
         print("Agregado correctamente:", matriz)
         

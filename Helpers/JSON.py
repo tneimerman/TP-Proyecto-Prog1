@@ -33,6 +33,7 @@ def guardar_diccionario(dic):
     try:
         with open(archivo_modulo, "r", encoding="UTF-8") as arch:
             dict = json.load(arch)
+        print(dic)
         dict.append(dic)
         with open(archivo_modulo, "w", encoding="UTF-8") as arch:
             json.dump(dict, arch, ensure_ascii=False)
@@ -60,7 +61,7 @@ def modificar_diccionario(dato_nuevo, pos, id):
         ids = [dic["ID"] for dic in dict]
         if id in ids:
             indice = ids.index(id)
-            dict[indice][f"{pos}"] = dato_nuevo
+            dict[indice][pos] = dato_nuevo
             with open(archivo_modulo, "w", encoding="UTF-8") as arch:
                 dict = json.dump(dict, arch, ensure_ascii=False)
             

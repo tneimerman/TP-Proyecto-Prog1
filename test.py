@@ -1,8 +1,8 @@
-from CRUDs.Archivos import * 
-from data import *
+from Helpers.Archivos import * 
+from referencias import *
 from CRUDs.Pasajeros import *   
 from CRUDs.Vuelos import mostrar_vuelos, get_destinos
-from CRUDs.JSON import *
+from Helpers.JSON import *
 from CRUDs.VueloPasajero import *
 
 archivo_modulo = "Archivos/Pasajeros.txt"

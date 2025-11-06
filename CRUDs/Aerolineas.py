@@ -1,7 +1,7 @@
-from data import referenciaAerolinea
+from referencias import referenciaAerolinea
 import re
 from functools import reduce
-from CRUDs.Archivos import * 
+from Helpers.Archivos import * 
 archivo_modulo = "Archivos/Aerolinea.txt"
 def registrar_aerolinea():
     """Registra una nueva aerolinea en el sistema"""

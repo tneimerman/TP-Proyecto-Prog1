@@ -1,6 +1,6 @@
 # CRUDs/Pasajeros.py
-from data import referenciaPasajeros
-from CRUDs.Archivos import *
+from referencias import referenciaPasajeros
+from Helpers.Archivos import *
 from Helpers import * 
 archivo_modulo = "Archivos/Pasajeros.txt"
 
