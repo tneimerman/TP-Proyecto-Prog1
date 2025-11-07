@@ -1,97 +1,97 @@
-from referencias import referenciaDestinos, Destinos
+from referencias import referenciaDestinos
 from Helpers.Archivos import *
-def getNewIdDestino():
-    if len(Destinos) == 0:
-        return 1
-    return max_id_recursivo(Destinos) + 1
+
+ARCHIVO_DESTINOS = "Archivos/Destinos.txt"
 
 def max_id_recursivo(lista, indice=0, maximo=None):
     if indice == len(lista):
-        return maximo
-    
-    if maximo is None or lista[indice][0] > maximo:
-        maximo = lista[indice][0]
-        return max_id_recursivo(lista, indice + 1, maximo)
+        return int(maximo) if maximo is not None else 0
+    actual = int(lista[indice][0])
+    if maximo is None or actual > maximo:
+        maximo = actual
+    return max_id_recursivo(lista, indice + 1, maximo)
+
+def getNewIdDestino():
+    lista = obtener_matriz(ARCHIVO_DESTINOS)
+    if lista is None or len(lista) == 0:
+        return 1
+    return max_id_recursivo(lista) + 1
+
 # CREATE
 def registrar_destino():
     print("\n--- Registro de Destino ---")
-    nuevo = []
     nuevo_id = getNewIdDestino()
-    nuevo.append(nuevo_id)
-
     destino = input("Ingrese nombre del destino: ")
- 
-    repetido = False
-    for d in Destinos:
+
+    lista = obtener_matriz(ARCHIVO_DESTINOS)
+    for d in lista:
         if d[1] == destino:
-            repetido = True
-    if repetido:
-        print("Ese destino ya existe.")
-        return None
-    nuevo.append(destino)
+            print("Ese destino ya existe.")
+            return
 
     descripcion = input("Ingrese la descripción: ")
-    nuevo.append(descripcion)
-
-    Destinos.append(nuevo)
+    nuevo = [nuevo_id, destino, descripcion]
+    guardar_data(ARCHIVO_DESTINOS, nuevo)
     print("Destino registrado con ID:", nuevo_id)
-    return nuevo_id
 
 # READ
 def mostrar_destinos():
     print("\n--- Lista de Destinos ---")
-    print("ID | Destino | Descripción")
-    for d in Destinos:
-        print(d[0], "-", d[1], "-", d[2])
+    print("║ID║     Destino     ║   Descripción   ║")
+    mostrar_informacion(ARCHIVO_DESTINOS)
 
 def buscar_destino():
-    criterio = input("Ingrese destino a buscar: ")
-    encontrados = []
-    for d in Destinos:
-        if criterio in d[1]:
-            encontrados.append(d)
-    if len(encontrados) > 0:
-        print("\nResultados:")
-        for d in encontrados:
-            print("ID:", d[0], "-", d[1], "-", d[2])
+    print("\n--- Buscar Destino ---")
+    print("1. Mostrar todos")
+    print("2. Buscar por ID")
+    print("3. Buscar por nombre")
+    opcion = input("Seleccione una opción: ")
+
+    if opcion == "1":
+        mostrar_destinos()
+    elif opcion == "2":
+        did = input("Ingrese el ID: ")
+        resultado = obtener_lista_por_id(did, ARCHIVO_DESTINOS)
+        if resultado:
+            print("Resultado encontrado:", resultado)
+        else:
+            print("No se encontró el destino.")
+    elif opcion == "3":
+        nombre = input("Ingrese el nombre del destino: ")
+        resultado = obtener_lista_por_dato(nombre, ARCHIVO_DESTINOS)
+        if resultado:
+            print("Resultado encontrado:", resultado)
+        else:
+            print("No se encontró el destino.")
     else:
-        print("No se encontraron coincidencias.")
+        print("Opción inválida.")
 
 # UPDATE
 def actualizar_destino():
     mostrar_destinos()
-    try:
-        did = int(input("Ingrese ID del destino a actualizar: "))
-        for d in Destinos:
-            if d[0] == did:
-                print("Destino actual:", d[1], "-", d[2])
-                nuevo_nombre = input("Nuevo nombre destino (Enter para mantener): ")
-                if nuevo_nombre != "":
-                    d[1] = nuevo_nombre
-                nueva_desc = input("Nueva descripción (Enter para mantener): ")
-                if nueva_desc != "":
-                    d[2] = nueva_desc
-                print("Destino actualizado.")
-                return did
-        print("No se encontró destino con ese ID.")
-    except ValueError:
-        print("ID inválido.")
-    return None
+    did = input("Ingrese el ID del destino a actualizar: ")
+    print("1. Modificar nombre")
+    print("2. Modificar descripción")
+    opcion = input("Seleccione una opción: ")
+
+    if opcion == "1":
+        nuevo = input("Ingrese el nuevo nombre: ")
+        modificar_lista(ARCHIVO_DESTINOS, nuevo, 1, did)
+    elif opcion == "2":
+        nuevo = input("Ingrese la nueva descripción: ")
+        modificar_lista(ARCHIVO_DESTINOS, nuevo, 2, did)
+    else:
+        print("Opción inválida.")
 
 # DELETE
 def eliminar_destino():
     mostrar_destinos()
-    try:
-        did = int(input("Ingrese ID del destino a eliminar: "))
-        for d in Destinos:
-            if d[0] == did:
-                Destinos.remove(d)
-                print("Destino eliminado.")
-                return did
-        print("No se encontró destino con ese ID.")
-    except ValueError:
-        print("ID inválido.")
-    return None
+    did = input("Ingrese el ID del destino a eliminar: ")
+    lista = obtener_lista_por_id(did, ARCHIVO_DESTINOS)
+    if lista:
+        borrar_data(ARCHIVO_DESTINOS, did, lista)
+    else:
+        print("No se encontró el destino con ese ID.")
 
 # MENU
 def menu_destinos():
@@ -99,14 +99,14 @@ def menu_destinos():
     while not salir:
         print()
         print("="*50)
-        print("\n--- Menú Destinos ---")
+        print("--- Menú de Destinos ---")
         print("="*50)
         print("1. Registrar destino")
         print("2. Mostrar destinos")
         print("3. Buscar destino")
         print("4. Actualizar destino")
         print("5. Eliminar destino")
-        print("0. Salir")
+        print("0. Volver")
         print("="*50)
         op = input("Opción: ")
 
@@ -121,8 +121,6 @@ def menu_destinos():
         elif op == "5":
             eliminar_destino()
         elif op == "0":
-            print("Volviendo al menú...")
-            print()
             salir = True
         else:
             print("⚠️ Opción inválida.")
