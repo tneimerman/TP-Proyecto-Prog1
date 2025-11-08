@@ -8,6 +8,19 @@ def show_list(list):
     if len(list) > 1:
         print(f"{referenciaPasajeros.index(list[1])}. {list[1]}")
         show_list(list[1:])
+def max_id_recursivo(lista, indice=0, maximo=None):
+    if indice == len(lista):
+        return int(maximo) if maximo is not None else 0
+    actual = int(lista[indice][0])
+    if maximo is None or actual > maximo:
+        maximo = actual
+    return max_id_recursivo(lista, indice + 1, maximo)
+
+def getNewId():
+    lista = obtener_matriz(archivo_modulo)
+    if lista is None or len(lista) == 0:
+        return 1
+    return max_id_recursivo(lista) + 1
 def displayActualizar():
     print("Seleccione una opcion para actualizar")
     show_list(referenciaPasajeros)
@@ -103,7 +116,7 @@ def datos_pasajero(id_pasajero):
 def registro():
     print("\n--- Registro de pasajero ---")
     nuevo = []
-    nuevo_id = obtener_id_maximo(archivo_modulo)
+    nuevo_id = getNewId()
     nuevo.append(nuevo_id)  # ID automático
 
     # Contraseña (mínimo: permitir cualquier string)

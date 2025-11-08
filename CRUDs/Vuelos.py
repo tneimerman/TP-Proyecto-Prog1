@@ -1,9 +1,21 @@
-from referencias import referenciaVuelos, Destinos, Aerolinea, referenciaDestinos,referenciaAerolinea
+from referencias import referenciaVuelos, referenciaDestinos,referenciaAerolinea
 from CRUDs.Destinos import mostrar_destinos 
 from Helpers import validar_fecha
 from Helpers.Archivos import *
 archivo_modulo = "Archivos/Vuelos.txt"
-#
+def max_id_recursivo(lista, indice=0, maximo=None):
+    if indice == len(lista):
+        return int(maximo) if maximo is not None else 0
+    actual = int(lista[indice][0])
+    if maximo is None or actual > maximo:
+        maximo = actual
+    return max_id_recursivo(lista, indice + 1, maximo)
+
+def getNewId():
+    lista = obtener_matriz(archivo_modulo)
+    if lista is None or len(lista) == 0:
+        return 1
+    return max_id_recursivo(lista) + 1
 def get_vuelos():
     aero = obtener_matriz("Archivos/Aerolinea.txt")
     dest = obtener_matriz("Archivos/Destinos.txt")
@@ -85,7 +97,7 @@ def show_results(data):
 def registrar_vuelo():
     print("\n--- Registro de Vuelo ---")
     nuevo = []
-    nuevo_id = obtener_id_maximo(archivo_modulo)
+    nuevo_id = getNewId(archivo_modulo)
     nuevo.append(nuevo_id)
 
     aero = get_aerolineas()

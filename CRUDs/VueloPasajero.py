@@ -4,10 +4,27 @@ from Helpers.Archivos import *
 from Helpers.JSON import *
 import re
 from functools import reduce
+archivo_modulo = "Archivos/VueloPasajero.json"
+def max_id_recursivo(lista, indice=0, maximo=None):
+    if indice == len(lista):
+        return int(maximo) if maximo is not None else 0
+    actual = int(lista[indice][0])
+    if maximo is None or actual > maximo:
+        maximo = actual
+    return max_id_recursivo(lista, indice + 1, maximo)
 
-def obtener_nuevo_id():
-    VueloPasajero = obtener_diccionarios()
-    return len(VueloPasajero) + 1
+def getNewId():
+    lista = obtener_diccionarios(archivo_modulo)
+    if lista is None or len(lista) == 0:
+        return 1
+    return max_id_recursivo(lista) + 1
+def existe_relacion(vp, id_pasajero, id_vuelo, i=0):
+    if i == len(vp):
+        return False
+    actual = vp[i]
+    if actual["IdPasajero"] == id_pasajero and actual["IdVuelo"] == id_vuelo:
+        return True
+    return existe_relacion(vp, id_pasajero, id_vuelo, i+1)
 
 # Validaciones de IDs en las matrices
 def validar_id_pasajero(id_pasajero):
@@ -96,16 +113,12 @@ def crear_relacion_vuelo_pasajero():
     
     # Verificar si la relación ya existe
     VueloPasajero = obtener_diccionarios()
-    relacion_existente = list(filter(lambda x: x["IdPasajero"] == id_pasajero and x["IdVuelo"] == id_vuelo, VueloPasajero))
-    if relacion_existente:
+    if existe_relacion(VueloPasajero, id_pasajero, id_vuelo):
         print("Error: Esta relación ya existe")
         return
-    
-    # Crear nueva relación
-    nuevo_id = obtener_nuevo_id()
+    nuevo_id = getNewId()
     nueva_relacion = {"ID": nuevo_id, "IdPasajero": id_pasajero,"IdVuelo": id_vuelo}
-    guardar_diccionario(nueva_relacion)
-    
+    guardar_diccionario(nueva_relacion) 
     print(f"Relación creada exitosamente:")
     print(f"Pasajero: {obtener_nombre_pasajero(id_pasajero)}")
     print(f"Vuelo: {obtener_info_vuelo(id_vuelo)}")

@@ -1,7 +1,7 @@
 from referencias import referenciaAerolinea
 from Helpers.Archivos import *
 
-ARCHIVO_AEROLINEAS = "Archivos/Aerolineas.txt"
+ARCHIVO_AEROLINEAS = "Archivos/Aerolinea.txt"
 
 
 def max_id_recursivo(lista, indice=0, maximo=None):

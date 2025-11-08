@@ -19,20 +19,7 @@ def obtener_matriz(archivo):
             arch.close()
         except:
             print("No se pudo cerrar el archivo") 
-def obtener_id_maximo(archivo):
-    try:
-        count = 0
-        arch = open(archivo, "r", encoding="UTF-8")
-        for linea in arch:
-            count += 1
-        return count + 1
-    except OSError:
-        print("No se pudo leer el archivo")
-    finally:
-        try:
-            arch.close()
-        except:
-            print("No se pudo cerrar el archivo") 
+
 
 def obtener_lista_por_dato(dato, archivo):
     try:
@@ -69,7 +56,7 @@ def mostrar_informacion(archivo):
         for linea in arch:
             lista = fix_info(linea)
             for x in lista:
-                print(f"║{x:^15}", end="")
+                print(f"║{x:^15 if len[x] > 15 else x:>15}", end="")
             print()
     except OSError:
         print("No se pudo leer el archivo")
