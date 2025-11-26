@@ -1,5 +1,6 @@
-1;Aerolineas Argentina;Airbus A330-200
+1;Aerolineas Argentina;Airbus A330
 2;Qatar Airways;Boeing 777
 3;Copa;Boeing 737 MAX 9-A
 4;Iberia;Airbus A350
-5;LATAM;Boeing 7876;Air France;Boeing 777
+5;LATAM;Boeing 7876;
+6;Argentina;Boeing 777

@@ -129,7 +129,7 @@ def registro():
             print("Inserte el nuevo mail:")
             nuevoMail = input()
             valid_mail = validar_mail(nuevoMail)
-            nuevo.append(valid_mail)
+            nuevo.append(nuevoMail)
             break
         except ValueError:
                 print("Mail invalido, intente devuelta")
@@ -141,7 +141,7 @@ def registro():
             print("Inserte el nuevo DNI:")
             nuevoDNI = input()
             valid_DNI = validar_dni(nuevoDNI)
-            nuevo.append(valid_DNI)
+            nuevo.append(nuevoDNI)
             break
         except ValueError:
             print("DNI invalido, intente denuevo")
@@ -158,7 +158,7 @@ def registro():
             print("Inserte el nuevo telefono:")
             nuevoTelefono = input()
             valid_tel  = validar_telefono(nuevoTelefono)
-            nuevo.append(valid_tel)
+            nuevo.append(nuevoTelefono)
             break
         except ValueError:
             print("Telefono invalido, intente denuevo")
@@ -171,7 +171,7 @@ def registro():
             print("Inserte la nueva fecha de nacimiento:")
             nuevaFecha = input()
             valid_fecha = validar_fecha(nuevaFecha)
-            nuevo.append(valid_fecha)
+            nuevo.append(nuevaFecha)
             break
         except ValueError:
             print("Fecha invalida, intente denuevo")

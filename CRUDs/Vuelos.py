@@ -3,6 +3,7 @@ from CRUDs.Destinos import mostrar_destinos
 from Helpers import validar_fecha
 from Helpers.Archivos import *
 archivo_modulo = "Archivos/Vuelos.txt"
+
 def max_id_recursivo(lista, indice=0, maximo=None):
     if indice == len(lista):
         return int(maximo) if maximo is not None else 0
@@ -11,11 +12,20 @@ def max_id_recursivo(lista, indice=0, maximo=None):
         maximo = actual
     return max_id_recursivo(lista, indice + 1, maximo)
 
+def existe_referencia_recursiva(lista, ref, indice=0):
+    if indice == len(lista): 
+        return False
+    if str(lista[indice][0]) == str(ref):
+        return True
+    return existe_referencia_recursiva(lista, ref, indice + 1)
+
+
 def getNewId():
     lista = obtener_matriz(archivo_modulo)
     if lista is None or len(lista) == 0:
         return 1
     return max_id_recursivo(lista) + 1
+
 def get_vuelos():
     aero = obtener_matriz("Archivos/Aerolinea.txt")
     dest = obtener_matriz("Archivos/Destinos.txt")
@@ -24,20 +34,30 @@ def get_vuelos():
         arch = open(archivo_modulo, "r", encoding="UTF-8")
         for linea in arch:
             lista = fix_info(linea)
-            d = list(filter(lambda x: x[0] == lista[1], dest))
-            a = list(filter(lambda x: x[0] == lista[2], aero))
-            lista[1] = a[0][1]
-            lista[2] = d[0][1]
+            a = list(filter(lambda x: x[0] == lista[1], aero))
+            if len(a) > 0:
+                lista[1] = a[0][1]
+            else:
+                lista[1] = "DESCONOCIDO"
+            d = list(filter(lambda x: x[0] == lista[2], dest))
+            if len(d) > 0:
+                lista[2] = d[0][1]
+            else:
+                lista[2] = "DESCONOCIDO"
             for x in lista:
                 print(f"║{x:^20}", end="")
             print()
+
     except OSError:
         print("No se pudo leer el archivo")
+
     finally:
         try:
             arch.close()
         except:
             print("No se pudo cerrar el archivo")
+
+
 def get_vuelo_by_referencia(pos, ref):
     try:
         arch = open(archivo_modulo, "r", encoding="UTF-8")
@@ -52,7 +72,7 @@ def get_vuelo_by_referencia(pos, ref):
             arch.close()
         except:
             print("No se pudo cerrar el archivo")
-        
+
 def get_fecha():
     while True:
         try:
@@ -62,48 +82,65 @@ def get_fecha():
         except ValueError:
             print("Fecha invalida, intente denuevo")
             continue
+
 def print_lista(lista):
     if len(lista) > 0:
         print(f"║{lista[0]:^20}", end="")
         print_lista(lista[1:])
+
 def get_destinos():
-    
     print("--- Seleccione un destino ---")
     print(f"{print_lista(referenciaDestinos)}")
     mostrar_informacion("Archivos/Destinos.txt")
     op = int(input("Seleccion: "))
     return op
+
 def get_aerolineas():
     print("--- Seleccione una aerolinea ---")
     print(f"{print_lista(referenciaAerolinea)}")
     mostrar_informacion("Archivos/Aerolinea.txt")
     op = int(input("Seleccion: "))
     return op
-    
+
 def show_results(data):
-    
+    if data is None:
+        print("\nNo se encontró ningún vuelo con ese dato.")
+        return
     aero = obtener_lista_por_dato(data[1], "Archivos/Aerolinea.txt")
+    if aero is None:
+        aero = ["0", "DESCONOCIDO"]
     dest = obtener_lista_por_dato(data[2], "Archivos/Destinos.txt")
+    if dest is None:
+        dest = ["0", "DESCONOCIDO"]
     data[1] = aero[1]
     data[2] = dest[1]
-    print(f"╔{"═"*20}╦{"═"*20}╦{"═"*20}╦{"═"*20}╦{"═"*20}╗")
+    print(f"╔{'═'*20}╦{'═'*20}╦{'═'*20}╦{'═'*20}╦{'═'*20}╗")
     print(f"{print_lista(referenciaVuelos)}")
-    print(f"╠{"═"*20}╬{"═"*20}╬{"═"*20}╬{"═"*20}╬{"═"*20}╣")
+    print(f"╠{'═'*20}╬{'═'*20}╬{'═'*20}╬{'═'*20}╬{'═'*20}╣")
     print(f"{print_lista(data)}")
-    print(f"╚{"═"*20}╩{"═"*20}╩{"═"*20}╩{"═"*20}╩{"═"*20}╝")
+    print(f"╚{'═'*20}╩{'═'*20}╩{'═'*20}╩{'═'*20}╩{'═'*20}╝")
 
-    
+
 # CREATE
+
 def registrar_vuelo():
     print("\n--- Registro de Vuelo ---")
     nuevo = []
-    nuevo_id = getNewId(archivo_modulo)
+    nuevo_id = getNewId()
     nuevo.append(nuevo_id)
 
     aero = get_aerolineas()
+    lista_aero = obtener_matriz("Archivos/Aerolinea.txt")
+    if not existe_referencia_recursiva(lista_aero, aero):
+        print("ERROR: La aerolínea seleccionada no existe.")
+        return
     nuevo.append(aero)
 
     dest = get_destinos()
+    lista_dest = obtener_matriz("Archivos/Destinos.txt")
+    if not existe_referencia_recursiva(lista_dest, dest):
+        print("ERROR: El destino seleccionado no existe.")
+        return
     nuevo.append(dest)
 
     fecha = get_fecha()
@@ -117,15 +154,11 @@ def registrar_vuelo():
     return nuevo_id
 
 # READ
-
 def mostrar_vuelos():
-    
     print("\n--- Lista de Vuelos ---")
     print(f"║{print_lista(referenciaVuelos)}║")
     print("="*110)
     print(f"{get_vuelos()}")
-
-
 
 def buscar_vuelo():
     found = []
@@ -141,10 +174,6 @@ def buscar_vuelo():
         case _:
             print("Opcion incorrecta")
     show_results(found)
-    
-        
-            
-   
 
 # UPDATE
 def actualizar_vuelo():
@@ -171,7 +200,6 @@ def actualizar_vuelo():
     except ValueError:
         print("ID inválido.")
 
-
 def eliminar_vuelo():
     mostrar_vuelos()
     while True:
@@ -192,7 +220,6 @@ def eliminar_vuelo():
         except ValueError:
             print("ID inválido.")
         return None
-
 
 def menu_vuelo():
     while True:
@@ -219,5 +246,5 @@ def menu_vuelo():
                 print("Saliendo del menú de vuelos...")
                 break
             case _:
-                print("Opción inválida.")
+                print("Opción inválida.")
                 continue

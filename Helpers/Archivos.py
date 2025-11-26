@@ -56,7 +56,7 @@ def mostrar_informacion(archivo):
         for linea in arch:
             lista = fix_info(linea)
             for x in lista:
-                print(f"║{x:^15 if len[x] > 15 else x:>15}", end="")
+                print(f"║{x:^20}", end="")
             print()
     except OSError:
         print("No se pudo leer el archivo")

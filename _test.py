@@ -12,9 +12,11 @@ def test_getNewIdAerolinea():
 def test_obtener_diccionario_por_id():
     assert obtener_diccionario_por_id(1) == {"ID":1,"IdPasajero": 1,"IdVuelo": 3}
 
-mail = "test@test.com"
+
 def test_validar_mail():
-    assert validar_mail(mail) == True
+    mail = "test@test.com"
+    valid = validar_mail(mail)
+    assert valid == True
 
 lista = obtener_lista_por_dato("Juan", "Archivos/Pasajeros.txt")
 def test_obtener_lista_por_id():
