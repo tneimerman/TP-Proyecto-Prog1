@@ -4,14 +4,13 @@ def fix_info(l):
     list = l.split(";")
     list[-1] = list[-1].strip("\n")
     return list
-def obtener_matriz(archivo):
-    lista = []
+def obtener_max_archivo(archivo):
+    count = 0
     try:
         arch = open(archivo, "r", encoding="UTF-8")
         for linea in arch:
-            lista_aux = fix_info(linea)
-            lista.append(lista_aux)
-        return lista
+            count+=1          
+        return count
     except OSError:
         print("No se pudo leer el archivo")
     finally:

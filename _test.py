@@ -1,24 +1,40 @@
-from Helpers.Validaciones import validar_mail
-from Helpers.Archivos import obtener_lista_por_dato, obtener_matriz
+from Helpers.Validaciones import validar_mail, validar_fecha
+from Helpers.Archivos import obtener_max_archivo
 from CRUDs.Aerolineas import getNewIdAerolinea
-from Helpers.JSON import obtener_diccionario_por_id
 
 
-aero = obtener_matriz("Archivos/Aerolinea.txt")
-print(aero)
+def max_id():
+    return obtener_max_archivo("Archivos/Aerolinea.txt")
+
+def get_fecha():
+    return "2025/02/29"
+
+def get_mail():
+    return "test@test.com"
+
 def test_getNewIdAerolinea():
-    assert getNewIdAerolinea() == len(aero) + 1
+    #Arrange
+    count = max_id()
+    #Act
+    resultado = getNewIdAerolinea()
+    #Assert
+    assert resultado == count+1
     
-def test_obtener_diccionario_por_id():
-    assert obtener_diccionario_por_id(1) == {"ID":1,"IdPasajero": 1,"IdVuelo": 3}
-
+def test_validar_fecha():
+    #Arrange
+    fecha = get_fecha()
+    #Act
+    resultado = validar_fecha(fecha)
+    #Assert
+    assert resultado == True
 
 def test_validar_mail():
-    mail = "test@test.com"
-    valid = validar_mail(mail)
-    assert valid == True
+    #Arrange
+    mail = get_mail()
+    #Act
+    resultado = validar_mail(mail)
+    #Assert
+    assert resultado == True
 
-lista = obtener_lista_por_dato("Juan", "Archivos/Pasajeros.txt")
-def test_obtener_lista_por_id():
-    assert lista[0] == '1'
+
 

@@ -8,19 +8,20 @@ def show_list(list):
     if len(list) > 1:
         print(f"{referenciaPasajeros.index(list[1])}. {list[1]}")
         show_list(list[1:])
-def max_id_recursivo(lista, indice=0, maximo=None):
-    if indice == len(lista):
+def max_id_recursivo(count, indice=0, maximo=None):
+    if indice == count:
         return int(maximo) if maximo is not None else 0
-    actual = int(lista[indice][0])
+    id = obtener_lista_por_id(indice+1,archivo_modulo)
+    actual = int(id[0])
     if maximo is None or actual > maximo:
         maximo = actual
-    return max_id_recursivo(lista, indice + 1, maximo)
+    return max_id_recursivo(count, indice + 1, maximo)
 
 def getNewId():
-    lista = obtener_matriz(archivo_modulo)
-    if lista is None or len(lista) == 0:
+    count = obtener_max_archivo(archivo_modulo)
+    if count == 0:
         return 1
-    return max_id_recursivo(lista) + 1
+    return max_id_recursivo(count) + 1
 def displayActualizar():
     print("Seleccione una opcion para actualizar")
     show_list(referenciaPasajeros)

@@ -4,13 +4,14 @@ from Helpers import validar_fecha
 from Helpers.Archivos import *
 archivo_modulo = "Archivos/Vuelos.txt"
 
-def max_id_recursivo(lista, indice=0, maximo=None):
-    if indice == len(lista):
+def max_id_recursivo(count, indice=0, maximo=None):
+    if indice == len(count):
         return int(maximo) if maximo is not None else 0
-    actual = int(lista[indice][0])
+    id = obtener_lista_por_id(indice+1,archivo_modulo)
+    actual = int(id[0])
     if maximo is None or actual > maximo:
         maximo = actual
-    return max_id_recursivo(lista, indice + 1, maximo)
+    return max_id_recursivo(count, indice + 1, maximo)
 
 def existe_referencia_recursiva(lista, ref, indice=0):
     if indice == len(lista): 
@@ -21,29 +22,19 @@ def existe_referencia_recursiva(lista, ref, indice=0):
 
 
 def getNewId():
-    lista = obtener_matriz(archivo_modulo)
-    if lista is None or len(lista) == 0:
+    count    = obtener_max_archivo(archivo_modulo)
+    if count == 0:
         return 1
-    return max_id_recursivo(lista) + 1
+    return max_id_recursivo(count) + 1
 
 def get_vuelos():
-    aero = obtener_matriz("Archivos/Aerolinea.txt")
-    dest = obtener_matriz("Archivos/Destinos.txt")
 
     try:
         arch = open(archivo_modulo, "r", encoding="UTF-8")
         for linea in arch:
             lista = fix_info(linea)
-            a = list(filter(lambda x: x[0] == lista[1], aero))
-            if len(a) > 0:
-                lista[1] = a[0][1]
-            else:
-                lista[1] = "DESCONOCIDO"
-            d = list(filter(lambda x: x[0] == lista[2], dest))
-            if len(d) > 0:
-                lista[2] = d[0][1]
-            else:
-                lista[2] = "DESCONOCIDO"
+            lista[1] = obtener_lista_por_id(lista[1],"Archivos/Aerolinea.txt")
+            lista[2] = obtener_lista_por_id(lista[2],"Archivos/Destinos.txt")
             for x in lista:
                 print(f"║{x:^20}", end="")
             print()
@@ -130,15 +121,15 @@ def registrar_vuelo():
     nuevo.append(nuevo_id)
 
     aero = get_aerolineas()
-    lista_aero = obtener_matriz("Archivos/Aerolinea.txt")
-    if not existe_referencia_recursiva(lista_aero, aero):
+    max_aero = obtener_max_archivo("Archivos/Aerolinea.txt")
+    if not existe_referencia_recursiva(max_aero, aero):
         print("ERROR: La aerolínea seleccionada no existe.")
         return
     nuevo.append(aero)
 
     dest = get_destinos()
-    lista_dest = obtener_matriz("Archivos/Destinos.txt")
-    if not existe_referencia_recursiva(lista_dest, dest):
+    max_dest = obtener_max_archivo("Archivos/Destinos.txt")
+    if not existe_referencia_recursiva(max_dest, dest):
         print("ERROR: El destino seleccionado no existe.")
         return
     nuevo.append(dest)
@@ -146,8 +137,7 @@ def registrar_vuelo():
     fecha = get_fecha()
     nuevo.append(fecha)
 
-    escala = input("Ingrese escala (Directo o con escala): ")
-    nuevo.append(escala)
+
 
     guardar_data(archivo_modulo, nuevo)
     print("Vuelo registrado con ID:", nuevo_id)
@@ -156,9 +146,10 @@ def registrar_vuelo():
 # READ
 def mostrar_vuelos():
     print("\n--- Lista de Vuelos ---")
-    print(f"║{print_lista(referenciaVuelos)}║")
-    print("="*110)
-    print(f"{get_vuelos()}")
+    print_lista(referenciaVuelos)
+    print()
+    print("="*80)
+    get_vuelos()
 
 def buscar_vuelo():
     found = []
@@ -182,7 +173,7 @@ def actualizar_vuelo():
     try:
         vid = int(input("Ingrese ID del vuelo a actualizar: "))
 
-        op = input(f"Elija una opción: \n1. Cambiar aerolinea \n2. Cambiar destino \n3. Cambiar fecha de llegada \n4. Cambiar escala \n")
+        op = input(f"Elija una opción: \n1. Cambiar aerolinea \n2. Cambiar destino \n3. Cambiar fecha de llegada\n")
         match op:
             case "1":
                 aero = get_aerolineas()
@@ -193,9 +184,6 @@ def actualizar_vuelo():
             case "3":
                 fecha = get_fecha()
                 modificar_lista(archivo_modulo, fecha, op, vid)
-            case "4":
-                escala = input("Ingrese escala (Directo o con escala): ")
-                modificar_lista(archivo_modulo, escala, op, vid)
     
     except ValueError:
         print("ID inválido.")

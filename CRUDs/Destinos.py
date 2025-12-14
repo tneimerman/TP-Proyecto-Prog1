@@ -3,19 +3,20 @@ from Helpers.Archivos import *
 
 ARCHIVO_DESTINOS = "Archivos/Destinos.txt"
 
-def max_id_recursivo(lista, indice=0, maximo=None):
-    if indice == len(lista):
+def max_id_recursivo(count, indice=0, maximo=None):
+    if indice == count:
         return int(maximo) if maximo is not None else 0
-    actual = int(lista[indice][0])
+    id = obtener_lista_por_id(indice+1,ARCHIVO_DESTINOS)
+    actual = int(id[0])
     if maximo is None or actual > maximo:
         maximo = actual
-    return max_id_recursivo(lista, indice + 1, maximo)
+    return max_id_recursivo(count, indice + 1, maximo)
 
 def getNewIdDestino():
-    lista = obtener_matriz(ARCHIVO_DESTINOS)
-    if lista is None or len(lista) == 0:
+    count = obtener_max_archivo(ARCHIVO_DESTINOS)
+    if count == 0:
         return 1
-    return max_id_recursivo(lista) + 1
+    return max_id_recursivo(count) + 1
 
 # CREATE
 def registrar_destino():
@@ -23,11 +24,11 @@ def registrar_destino():
     nuevo_id = getNewIdDestino()
     destino = input("Ingrese nombre del destino: ")
 
-    lista = obtener_matriz(ARCHIVO_DESTINOS)
-    for d in lista:
-        if d[1] == destino:
-            print("Ese destino ya existe.")
-            return
+    lista = obtener_lista_por_dato(destino,ARCHIVO_DESTINOS)
+
+    if lista[1] == destino:
+        print("Ese destino ya existe.")
+        return
 
     descripcion = input("Ingrese la descripción: ")
     nuevo = [nuevo_id, destino, descripcion]

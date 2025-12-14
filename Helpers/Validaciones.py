@@ -1,20 +1,23 @@
 import re
+from Helpers.fecha_validacion import fecha_validacion
 def validar_mail(mail):
     if re.search(r"\w@\w.\w", mail) == None:
         raise ValueError("Mail invalido")
     return True
 
 def validar_dni(dni):
-    if  dni.isdigit() == False:
+    if  dni.isdigit() == None:
         raise ValueError("DNI Invalido")
     return True
 
 def validar_telefono(tel):
-    if re.search(r"11\d{8}",tel) == False:
+    if re.search(r"11\d{8}",tel) == None:
         raise ValueError("Telefono invalido")
     return True
 
 def validar_fecha(fecha):
-    if re.search(r"\d{4}/\d{2}/\d{2}", fecha) is None:
-        raise ValueError("Fecha invalida, formato valido 11(8 numeros)")
-    return True
+    ok, msg = fecha_validacion(fecha, True)
+    if ok != True:
+        raise ValueError(msg)
+    else:
+        return True

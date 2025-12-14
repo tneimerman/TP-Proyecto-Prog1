@@ -4,19 +4,21 @@ from Helpers.Archivos import *
 ARCHIVO_AEROLINEAS = "Archivos/Aerolinea.txt"
 
 
-def max_id_recursivo(lista, indice=0, maximo=None):
-    if indice == len(lista):
+def max_id_recursivo(count, indice=0, maximo=None):
+    if indice == count:
         return int(maximo) if maximo is not None else 0
-    actual = int(lista[indice][0])
+    id = obtener_lista_por_id(indice+1,ARCHIVO_AEROLINEAS)
+    print(id)
+    actual = int(id[0])
     if maximo is None or actual > maximo:
         maximo = actual
-    return max_id_recursivo(lista, indice + 1, maximo)
+    return max_id_recursivo(count, indice + 1, maximo)
 
 def getNewIdAerolinea():
-    lista = obtener_matriz(ARCHIVO_AEROLINEAS)
-    if lista is None or len(lista) == 0:
+    count = obtener_max_archivo(ARCHIVO_AEROLINEAS)
+    if count == 0:
         return 1
-    return max_id_recursivo(lista) + 1
+    return max_id_recursivo(count) + 1
 
 # CREATE
 def registrar_aerolinea():
@@ -24,11 +26,10 @@ def registrar_aerolinea():
     nuevo_id = getNewIdAerolinea()
     nombre = input("Ingrese nombre de la aerolínea: ")
 
-    lista = obtener_matriz(ARCHIVO_AEROLINEAS)
-    for a in lista:
-        if a[1] == nombre:
-            print("Esa aerolínea ya existe.")
-            return
+    lista = obtener_lista_por_dato(nombre,ARCHIVO_AEROLINEAS)
+    if lista[1] == nombre:
+        print("Esa aerolínea ya existe.")
+        return
 
     modelo = input("Ingrese el modelo del avión: ")
     nuevo = [nuevo_id, nombre, modelo]
