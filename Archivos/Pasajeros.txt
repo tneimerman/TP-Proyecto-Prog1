@@ -3,3 +3,4 @@
 3;34567;carlosramirez@gmail.com;38456789;Carlos;Ramirez;1156789012;1995/07/03
 4;45678;lufernandez@hotmail.com;41234567;Lucia;Fernandez;1167890123;1992/01/19
 5;56789;anamartinez@yahoo.com.ar;37567890;Ana;Martinez;1178901234;1985/03/28
+6;hola;jdiaz@gmail.com;12353232;juan;diaz;1124435654;1965/02/12

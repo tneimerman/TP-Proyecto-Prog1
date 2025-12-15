@@ -3,8 +3,6 @@ from Helpers import *
 if __name__ == "__main__":
     op = 0
     pasajero = traer_usuario()
-    idp = int()
-    print(pasajero)
     if pasajero != None:
         idp = pasajero[0]
     else:
@@ -19,7 +17,7 @@ if __name__ == "__main__":
         if idp != 0:
             print(f" 1. Gestionar pasajeros\n 2. Gestionar aerolineas\n 3. Gestionar destinos\n 4. Gestionar vuelos\n 5. Gestionar vuelos de pasajeros\n 0. Salir")
         else:
-            print("1. Gestionar pasajeros\n2. Gestionar aerolineas\n3. Gestionar destinos\n4. Gestionar vuelos"+"\033[9m \n5. Actualizar pasajero\033[0m" + "\n0. Salir")
+            print("1. Gestionar pasajeros\n2. Gestionar aerolineas\n3. Gestionar destinos\n4. Gestionar vuelos"+"\033[9m \n5. Gestionar vuelos de pasajeros\033[0m" + "\n0. Salir")
         print("="*50)
         op = input("Opción: ")
         match op:

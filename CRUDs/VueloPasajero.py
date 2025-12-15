@@ -5,17 +5,16 @@ from Helpers import *
 import re
 from functools import reduce
 pasajero = traer_usuario()
-archivo_modulo = "Archivos/VueloPasajero.json"
 def max_id_recursivo(lista, indice=0, maximo=None):
     if indice == len(lista):
         return int(maximo) if maximo is not None else 0
-    actual = int(lista[indice][0])
+    actual = int(lista[indice]["ID"])
     if maximo is None or actual > maximo:
         maximo = actual
     return max_id_recursivo(lista, indice + 1, maximo)
 
 def getNewId():
-    lista = obtener_diccionarios(archivo_modulo)
+    lista = obtener_diccionarios()
     if lista is None or len(lista) == 0:
         return 1
     return max_id_recursivo(lista) + 1
@@ -78,15 +77,9 @@ def crear_relacion_vuelo_pasajero():
     print("\nPasajero:")
     
     
-    try:
-        id_pasajero = int(input("\nIngrese ID del pasajero: "))
-        if not validar_id_pasajero(id_pasajero):
-            print("Error: ID de pasajero no válido")
-            return
-    except ValueError:
-        print("Error: Debe ingresar un número válido")
-        return
-    
+    pasajero = traer_usuario()
+    id_pasajero = pasajero[0]
+    print(f"ID: {id_pasajero} | Nombre: {obtener_nombre_pasajero(id_pasajero)}")
     # Mostrar vuelos disponibles
     print("\nVuelos disponibles:")
     get_vuelos()
@@ -145,7 +138,8 @@ def buscar_relaciones():
     elif opcion == 3:
         try:
             id_vuelo = int(input("Ingrese ID del vuelo: "))
-            relaciones = list(filter(lambda x: x[2] == id_vuelo, VueloPasajero))
+            
+            relaciones = list(filter(lambda x: x["IdVuelo"] == id_vuelo, VueloPasajero))
         except ValueError:
             print("Error: Debe ingresar un número válido")
             return
@@ -322,7 +316,7 @@ def generar_estadisticas():
         
         if conteos_pasajeros:
             pasajero_top = reduce(lambda a, b: a if a[1] > b[1] else b, conteos_pasajeros)
-            nombre_pasajero = obtener_nombre_pasajero(pasajero_top["IdPasajero"])
+            nombre_pasajero = obtener_nombre_pasajero(pasajero_top[0])
             print(f"\nPasajero con más vuelos: {nombre_pasajero} ({pasajero_top[1]} vuelos)")
     
     if opcion in [2, 5]:

@@ -1,4 +1,5 @@
 from Helpers import *
+from CRUDs.VueloPasajero import getNewId
 from CRUDs import *
 archivo_modulo = "Archivos/Pasajeros.txt"
 
@@ -25,6 +26,9 @@ dic1 = {"ID": 5, "IdPasajero": 4, "IdVuelo": 3}
 #lista = fix_info("1;12345;jperez@gmail.com;40123456;Juan;Perez;1134567890;1990/05/14")
 #print(lista)
 #guardar_usuario(lista)
-lista = obtener_lista_por_dato("anamartinez@yahoo.com.ar",archivo_modulo)
+#lista = obtener_lista_por_dato("anamartinez@yahoo.com.ar",archivo_modulo)
 #lista = obtener_lista_por_id(6,archivo_modulo)
-print(lista)
+#print(lista)
+
+#hola, chau = verificar_dias("02","29","2025")
+getNewId()

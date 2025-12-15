@@ -38,7 +38,7 @@ def registrar_destino():
 # READ
 def mostrar_destinos():
     print("\n--- Lista de Destinos ---")
-    print("║ID║     Destino     ║   Descripción   ║")
+    print("║   ID    ║  Destino  ║                      Descripción                    ║")
     mostrar_informacion(ARCHIVO_DESTINOS)
 
 def buscar_destino():

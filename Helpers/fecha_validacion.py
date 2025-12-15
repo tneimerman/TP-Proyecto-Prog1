@@ -34,14 +34,16 @@ def verificar_dias(mes, dia, año):
     if dia_a_numero > 0 and dia_a_numero < 31 :
         match mes:
             case "01" | "03" | "05" | "07" | "08" | "10" | "12":
-                patron = f"{dias_fixed}10-31"
+                patron = f"{dias_fixed}[10-31]"
             case "04" | "06" | "09" | "11":
-                patron = f"{dias_fixed}10-31"
+                patron = f"{dias_fixed}[10-30]"
             case "02":
                 if año_a_numero % 4 == 0:
-                    patron = f"{dias_fixed}10-29"
+                    print(año_a_numero%4)
+                    patron = f"{dias_fixed}[10-29]"
                 else:
-                    patron = f"{dias_fixed}10-28"
+                    print(año_a_numero%4)
+                    patron = f"{dias_fixed}[10-28]"
             case _:
                 return False
         respuesta = re.match(patron,dia)

@@ -22,7 +22,7 @@ def existe_referencia_recursiva(lista, ref, indice=0):
 
 
 def getNewId():
-    count    = obtener_max_archivo(archivo_modulo)
+    count = obtener_max_archivo(archivo_modulo)
     if count == 0:
         return 1
     return max_id_recursivo(count) + 1
@@ -39,7 +39,7 @@ def get_vuelos():
             lista[2] = d[1]
             for x in lista:
                 print(f"║{x:^20}", end="")
-            print()
+            print("║")
 
     except OSError:
         print("No se pudo leer el archivo")
@@ -83,14 +83,16 @@ def print_lista(lista):
 
 def get_destinos():
     print("--- Seleccione un destino ---")
-    print(f"{print_lista(referenciaDestinos)}")
+    print_lista(referenciaDestinos)
+    print("║")
     mostrar_informacion("Archivos/Destinos.txt")
     op = int(input("Seleccion: "))
     return op
 
 def get_aerolineas():
     print("--- Seleccione una aerolinea ---")
-    print(f"{print_lista(referenciaAerolinea)}")
+    print_lista(referenciaAerolinea)
+    print("║")
     mostrar_informacion("Archivos/Aerolinea.txt")
     op = int(input("Seleccion: "))
     return op
@@ -107,11 +109,13 @@ def show_results(data):
         dest = ["0", "DESCONOCIDO"]
     data[1] = aero[1]
     data[2] = dest[1]
-    print(f"╔{'═'*20}╦{'═'*20}╦{'═'*20}╦{'═'*20}╦{'═'*20}╗")
-    print(f"{print_lista(referenciaVuelos)}")
-    print(f"╠{'═'*20}╬{'═'*20}╬{'═'*20}╬{'═'*20}╬{'═'*20}╣")
-    print(f"{print_lista(data)}")
-    print(f"╚{'═'*20}╩{'═'*20}╩{'═'*20}╩{'═'*20}╩{'═'*20}╝")
+    print(f"╔{'═'*20}╦{'═'*20}╦{'═'*20}╦{'═'*20}╗")
+    print_lista(referenciaVuelos)
+    print("║")
+    print(f"╠{'═'*20}╬{'═'*20}╬{'═'*20}╬{'═'*20}╣")
+    print_lista(data)
+    print("║")
+    print(f"╚{'═'*20}╩{'═'*20}╩{'═'*20}╩{'═'*20}╝")
 
 
 # CREATE
@@ -149,7 +153,7 @@ def registrar_vuelo():
 def mostrar_vuelos():
     print("\n--- Lista de Vuelos ---")
     print_lista(referenciaVuelos)
-    print()
+    print("║")
     print("="*80)
     get_vuelos()
 
