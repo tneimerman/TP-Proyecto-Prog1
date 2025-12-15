@@ -1,10 +1,10 @@
 from referencias import referenciaVueloPasajero
 from CRUDs.Vuelos import get_vuelos
-from Helpers.Archivos import *
-from Helpers.JSON import *
+from Helpers import *
 
 import re
 from functools import reduce
+pasajero = traer_usuario()
 archivo_modulo = "Archivos/VueloPasajero.json"
 def max_id_recursivo(lista, indice=0, maximo=None):
     if indice == len(lista):
@@ -39,20 +39,20 @@ def validar_id_vuelo(id_vuelo):
 def obtener_nombre_pasajero(id_pasajero):
     pasajero = obtener_lista_por_id(id_pasajero,"Archivos/Pasajeros.txt")
     if pasajero:
-        return f"{pasajero[0][4]} {pasajero[0][5]}"  # Nombre + Apellido
+        return f"{pasajero[4]} {pasajero[5]}"  # Nombre + Apellido
     return "Desconocido"
 
 def obtener_info_vuelo(id_vuelo):
     """Obtiene información del vuelo por ID"""
     vuelo = obtener_lista_por_id(id_vuelo,"Archivos/Vuelos.txt")
     if vuelo:
-        empresa = int(vuelo[0][1])
-        id_destino = int(vuelo[0][2])
-        fecha = vuelo[0][3]
+        empresa = int(vuelo[1])
+        id_destino = int(vuelo[2])
+        fecha = vuelo[3]
         
         # Obtener destino
         destino = obtener_lista_por_id(id_destino,"Archivos/Destinos.txt")
-        nombre_destino = destino[0][1] if destino else "Desconocido"
+        nombre_destino = destino[1] if destino else "Desconocido"
         
         return f"{empresa} - {nombre_destino} ({fecha})"
     return "Vuelo desconocido"
@@ -75,8 +75,8 @@ def crear_relacion_vuelo_pasajero():
     print("\n=== CREAR NUEVA RELACIÓN VUELO-PASAJERO ===")
     
     # Mostrar pasajeros disponibles
-    print("\nPasajeros disponibles:")
-    mostrar_informacion("Archivos/Pasajeros.txt")
+    print("\nPasajero:")
+    
     
     try:
         id_pasajero = int(input("\nIngrese ID del pasajero: "))
@@ -130,13 +130,14 @@ def buscar_relaciones():
     if opcion == 1:
         try:
             id_relacion = int(input("Ingrese ID de la relación: "))
+            
             relaciones = list(filter(lambda x: x["ID"] == id_relacion, VueloPasajero))
         except ValueError:
             print("Error: Debe ingresar un número válido")
             return
     elif opcion == 2:
         try:
-            id_pasajero = int(input("Ingrese ID del pasajero: "))
+            id_pasajero = pasajero[0]
             relaciones = list(filter(lambda x: x["IdPasajero"] == id_pasajero, VueloPasajero))
         except ValueError:
             print("Error: Debe ingresar un número válido")

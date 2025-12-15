@@ -33,8 +33,10 @@ def get_vuelos():
         arch = open(archivo_modulo, "r", encoding="UTF-8")
         for linea in arch:
             lista = fix_info(linea)
-            lista[1] = obtener_lista_por_id(lista[1],"Archivos/Aerolinea.txt")
-            lista[2] = obtener_lista_por_id(lista[2],"Archivos/Destinos.txt")
+            a = obtener_lista_por_id(lista[1],"Archivos/Aerolinea.txt")
+            d = obtener_lista_por_id(lista[2],"Archivos/Destinos.txt")
+            lista[1] = a[1]
+            lista[2] = d[1]
             for x in lista:
                 print(f"║{x:^20}", end="")
             print()

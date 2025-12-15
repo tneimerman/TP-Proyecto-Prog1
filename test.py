@@ -1,13 +1,5 @@
-from Helpers.Archivos import * 
-from referencias import *
-from CRUDs.Pasajeros import *   
-from CRUDs.Vuelos import mostrar_vuelos, get_destinos
-from CRUDs.Aerolineas import getNewIdAerolinea
-from Helpers.JSON import *
-from CRUDs.VueloPasajero import *
-from Helpers.fecha_validacion import *
-from Helpers.Validaciones import *
-from _test import *
+from Helpers import *
+from CRUDs import *
 archivo_modulo = "Archivos/Pasajeros.txt"
 
 vuelo = ["6", "2", "1", "2026/12/02", "Directo"]
@@ -28,5 +20,11 @@ dic1 = {"ID": 5, "IdPasajero": 4, "IdVuelo": 3}
 #print(d)
 #print(m)
 #validar_fecha("2025/02/29")
-test_validar_mail()
-getNewIdAerolinea()
+#test_validar_mail()
+#getNewIdAerolinea()
+#lista = fix_info("1;12345;jperez@gmail.com;40123456;Juan;Perez;1134567890;1990/05/14")
+#print(lista)
+#guardar_usuario(lista)
+lista = obtener_lista_por_dato("anamartinez@yahoo.com.ar",archivo_modulo)
+#lista = obtener_lista_por_id(6,archivo_modulo)
+print(lista)

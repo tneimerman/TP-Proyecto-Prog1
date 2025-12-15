@@ -24,9 +24,13 @@ def obtener_lista_por_dato(dato, archivo):
     try:
         arch = open(archivo, "r", encoding="UTF-8")
         for linea in arch:
+            print(linea)
             lista = fix_info(linea)
             if str(dato) in lista:
-                return lista      
+                return lista
+            elif str(dato) not in lista:
+                print("No se encontro el dato:", {dato})
+            
     except OSError:
         print("No se pudo leer el archivo")
     finally:
@@ -38,6 +42,7 @@ def obtener_lista_por_id(id, archivo):
     try:
         arch = open(archivo, "r", encoding="UTF-8")
         for linea in arch:
+            print(linea)
             lista = fix_info(linea)
             if str(id) == lista[0]:
                 return lista      

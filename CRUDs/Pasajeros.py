@@ -109,10 +109,13 @@ def datos_pasajero(id_pasajero):
     print(f"Datos del pasajero")
     print("="*(180))
     print(f"╔{"═"*(180)}╗")
-    print(show_datos(referenciaPasajeros))
+    show_datos(referenciaPasajeros)
+    print()
     print(f"╠{"═"*(180)}╣")
-    print(f"║{show_datos(lista)}║")
+    show_datos(lista)
+    print()
     print(f"╚{"═"*(180)}╝")
+    pase = input("Enter para continuar: ")
 
 def registro():
     print("\n--- Registro de pasajero ---")
@@ -179,6 +182,7 @@ def registro():
             continue
 
     guardar_data(archivo_modulo, nuevo)
+    guardar_usuario(nuevo)
     print("Pasajero registrado con ID:", nuevo_id)
     return nuevo_id
 
@@ -199,8 +203,10 @@ def login():
         contr = input("Contraseña: ")
 
         # Buscar coincidencia exacta mail/contraseña
+        user = obtener_lista_por_dato(mail, archivo_modulo)
+        guardar_usuario(user)
+        break
         
-        return  obtener_lista_por_dato(mail, archivo_modulo)
 
 
 
@@ -238,8 +244,13 @@ def eliminar(id_pasajero):
 
 
 
-def menu_pasajeros(id_pasajero=0):
+def menu_pasajeros():
     salir = False
+    pasajero = traer_usuario()
+    if(pasajero != None):
+        id_pasajero = pasajero[0]
+    else:    
+        id_pasajero = 0
     while salir != True:
         print()
         print("="*50)
@@ -261,20 +272,17 @@ def menu_pasajeros(id_pasajero=0):
         print("="*50)
 
         if id_pasajero != 0:
-            try:
-                print(f"\nSesión iniciada: {pasajero[4]} {pasajero[id_pasajero-1][5]} (ID {id_pasajero})")
-            except Exception:
-
-                print(f"\nSesión iniciada con ID {id_pasajero} (registro no disponible)")
+            print(f"\nSesión iniciada: {pasajero[4]} {pasajero[5]} (ID {id_pasajero})")
 
         op = input("\nOpción: ").strip()
         match op:
             case "1":
-
-                id_pasajero = registro()
+                registro()
+                pasajero = traer_usuario()
+                id_pasajero = pasajero[0]
             case "2":
-
-                pasajero = login()
+                login()
+                pasajero = traer_usuario()
                 id_pasajero = pasajero[0]
             case "3":
                 try:
